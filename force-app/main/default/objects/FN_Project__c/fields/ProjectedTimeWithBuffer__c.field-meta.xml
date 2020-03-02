@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectedTimeWithBuffer__c</fullName>
+    <description>the projected amount of time with the buffer to complete the work for this project</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The projected time to complete the work.</inlineHelpText>
+    <label>Projected Time w/Buffer</label>
+    <precision>9</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

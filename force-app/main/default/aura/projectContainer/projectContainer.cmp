@@ -1,0 +1,5 @@
+<aura:component implements="lightning:isUrlAddressable,flexipage:availableForAllPageTypes" description="c:projectSheet aura component">
+    <aura:attribute name="projectId" type="string" default="" />
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <c:projectSheet projectId="{!v.projectId}" />
+</aura:component>	

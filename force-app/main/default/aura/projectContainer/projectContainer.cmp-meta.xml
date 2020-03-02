@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AuraDefinitionBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <description>A container component used to be able to redirect from a summary page to a detail page with LWC</description>
+</AuraDefinitionBundle>

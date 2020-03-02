@@ -1,0 +1,32 @@
+<template>
+    <lightning-card title={title} icon-name="utility:component_customization">
+        <div class="slds-card__body_inner">
+            <template if:false={isLoading}>
+                <div>project details here<br/></div>
+                <template if:false={hasError}>
+                    <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                        <!-- items bound directly to the sheet (not contained in a feature) -->
+                        <lightning-layout-item size="12" class="slds-p-around_x-small">
+                            <c-project-feature feature={sheet} columns={columns}></c-project-feature>
+                        </lightning-layout-item>
+                        <!-- features list-->
+                        <template for:each={sheet.features} for:item="feature">
+                            <lightning-layout-item key={feature.id} size="12" class="slds-p-around_x-small">
+                                <!-- project feature -->
+                                <c-project-feature feature={feature} columns={columns}></c-project-feature>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+                </template>
+                <template if:true={hasError}>
+                    <div class="slds-text-color_error">
+                        An error occurred while loading the project items.
+                    </div>
+                </template>
+            </template>
+            <template if:true={isLoading}>
+                display spinner
+            </template>
+        </div>
+    </lightning-card>
+</template>

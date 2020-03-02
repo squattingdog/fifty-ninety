@@ -1,0 +1,33 @@
+<template>
+    <lightning-card title="Project Detail" >
+        <div class="slds-card__body_inner">
+            <template if:true={hasProject}>
+                <lightning-card title={project.Name}>
+                    <div class="slds-p-horizontal_small">
+                        <div class="slds-media">
+                            <div class="slds-media__figure">
+                                <img src={appResources.projectIcon} alt="Project profile" class="project-icon"/>
+                            </div>
+                            <div class="slds-media__body">
+                                <p class="slds-m-bottom_xx-small">{description}</p>
+                                <p class="slds-m-bottom_xx-small">Id: {project.Id}</p>
+                                <p class="slds-m-bottom_xx-small">Rate: {project.RateOfWork__c}</p>
+                                <p class="slds-m-bottom_xx-small">Duration: {project.ProjectedTime__c}</p>
+                                <p class="slds-m-bottom_xx-small">Buffer: {project.Buffer__c}</p>
+                                <p class="slds-m-bottom_xx-small">Duration w/Buffer: {project.ProjectedTimeWithBuffer__c}</p>
+                                <p class="slds-m-bottom_xx-small">Team: {project.Team__r.Name}</p>
+                                <p class="slds-m-bottom_xx-small">SHOW RELATED EPIC INFO HERE</p>
+                            </div>
+                        </div>
+                    </div>
+                </lightning-card>
+            </template>
+            <template if:false={hasProject}>
+                <div>
+                    Select a project to view its data.
+                </div>
+            </template>
+        </div>
+        
+    </lightning-card>
+</template>

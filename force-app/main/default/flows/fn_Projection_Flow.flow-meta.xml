@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>fn_addProjectBuffer</name>
+        <label>Add Project Buffer</label>
+        <locationX>478</locationX>
+        <locationY>565</locationY>
+        <assignmentItems>
+            <assignToReference>var_fn_itemsBufferTotal</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>calc_fn_projectItemBuffer</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_fn_itemsFiftyTotal</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_fn_projectLine.FiftySize__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_fn_itemsNinetyTotal</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_fn_projectLine.NinetySize__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>fn_ProjectItemsLoop</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>fn_ifRecoredTypeIdProvided</name>
+        <label>Record Type Id Provided</label>
+        <locationX>211</locationX>
+        <locationY>274</locationY>
+        <defaultConnector>
+            <targetReference>fn_flow_fnSummary_GetProjectItemRecords</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Record Type Id Provided</defaultConnectorLabel>
+        <rules>
+            <name>fn_recordTypeIdNotProvided</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_fnProjectItemRecordTypeId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>fn_getProjectItemRecordType</targetReference>
+            </connector>
+            <label>Record Type Id Not Provided</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>fn_projectIdProvided</name>
+        <label>If Project Id Provided</label>
+        <locationX>138</locationX>
+        <locationY>50</locationY>
+        <defaultConnector>
+            <targetReference>fn_ifRecoredTypeIdProvided</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Project Id Provided</defaultConnectorLabel>
+        <rules>
+            <name>fn_projectIdIsNull</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_fnProjectId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_fnProjectId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue/>
+                </rightValue>
+            </conditions>
+            <label>Project Id is null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>rate of work is greater than zero</description>
+        <name>fn_rateOfWorkGTZero</name>
+        <label>Rate of Work is greater than zero</label>
+        <locationX>349</locationX>
+        <locationY>744</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>fn_isGTzero</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fn_GetProjectRecord.RateOfWork__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fn_GetProjectRecord.RateOfWork__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <label>is greater than zero</label>
+        </rules>
+    </decisions>
+    <description>calculates the projected effort based on the line items</description>
+    <formulas>
+        <description>calculates the 50 sizing projection value based on the work rate and the total sum of line items.</description>
+        <name>calc_fn_fiftyProjection</name>
+        <dataType>Number</dataType>
+        <expression>{!var_fn_itemsFiftyTotal} / {!fn_GetProjectRecord.RateOfWork__c}</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <description>the square root of the running 90 total plus the 50 total</description>
+        <name>calc_fn_ProjectBuffer</name>
+        <dataType>Number</dataType>
+        <expression>SQRT( {!var_fn_itemsBufferTotal}) / {!fn_GetProjectRecord.RateOfWork__c}</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <description>calculates the project line item&#39;s buffer value</description>
+        <name>calc_fn_projectItemBuffer</name>
+        <dataType>Number</dataType>
+        <expression>({!var_fn_projectLine.NinetySize__c} - {!var_fn_projectLine.FiftySize__c})^2</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <description>The total projection with buffer</description>
+        <name>calc_fn_totalProjection</name>
+        <dataType>Number</dataType>
+        <expression>{!calc_fn_fiftyProjection} + {!calc_fn_ProjectBuffer}</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>50/90 Projection Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>50/90 Projection Flow</label>
+    <loops>
+        <description>Loops the project items records</description>
+        <name>fn_ProjectItemsLoop</name>
+        <label>Project Items Loop</label>
+        <locationX>314</locationX>
+        <locationY>565</locationY>
+        <assignNextValueToReference>var_fn_projectLine</assignNextValueToReference>
+        <collectionReference>fn_flow_fnSummary_GetProjectItemRecords</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>fn_addProjectBuffer</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>gets the fn_projectItem records by fn_projectId</description>
+        <name>fn_flow_fnSummary_GetProjectItemRecords</name>
+        <label>Get Project Item Records</label>
+        <locationX>217</locationX>
+        <locationY>462</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>fn_ProjectItemsLoop</targetReference>
+        </connector>
+        <filters>
+            <field>Project__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_fnProjectId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_fnProjectItemRecordTypeId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>FN_ProjectLine__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>FiftySize__c</queriedFields>
+        <queriedFields>NinetySize__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>fn_getProjectItemRecordType</name>
+        <label>Get Project Item Record Type Id</label>
+        <locationX>467</locationX>
+        <locationY>274</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>fn_flow_fnSummary_GetProjectItemRecords</targetReference>
+        </connector>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Work Item</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>FN_ProjectLine__c</stringValue>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>var_fnProjectItemRecordTypeId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>fn_GetProjectRecord</name>
+        <label>Get Project Record</label>
+        <locationX>213</locationX>
+        <locationY>665</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>fn_rateOfWorkGTZero</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_fnProjectId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>FN_Project__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>RateOfWork__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>saves the calculated values to the Project record</description>
+        <name>fn_saveProjectSizes</name>
+        <label>Save Project</label>
+        <locationX>211</locationX>
+        <locationY>857</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_fnProjectId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Buffer__c</field>
+            <value>
+                <elementReference>calc_fn_ProjectBuffer</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ProjectedTimeWithBuffer__c</field>
+            <value>
+                <elementReference>calc_fn_totalProjection</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ProjectedTime__c</field>
+            <value>
+                <elementReference>calc_fn_fiftyProjection</elementReference>
+            </value>
+        </inputAssignments>
+        <object>FN_Project__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>100</locationY>
+        <connector>
+            <targetReference>fn_projectIdProvided</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
+    <variables>
+        <description>running total of the 90 sizing calculated buffer</description>
+        <name>var_fn_itemsBufferTotal</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <description>the running total of the 50 sizing value</description>
+        <name>var_fn_itemsFiftyTotal</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <description>running total of the 90 sizing values</description>
+        <name>var_fn_itemsNinetyTotal</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>var_fn_projectLine</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>FN_ProjectLine__c</objectType>
+    </variables>
+    <variables>
+        <description>the fn_project Id value</description>
+        <name>var_fnProjectId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>The record types to include for calculations</description>
+        <name>var_fnProjectItemRecordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

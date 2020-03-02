@@ -1,0 +1,26 @@
+.project-tile:hover .slds-card {
+    border: 1px solid #d5fa03;
+    background-color: #233a55;
+}
+
+.project-tile .slds-card__body:hover {
+    cursor: pointer
+}
+
+.project-tile .slds-card {
+    border: 1px solid #51fa03;
+    background-color: #fbf6f0;
+    transition: border 0.5s, background-color 0.5s;
+}
+
+.project-tile .slds-card__header {
+    padding: .5rem 1rem;
+    border-bottom: 2px solid #51fa03;
+    border-radius: 4px 4px 0 0;
+    background-color: #047213ad;
+    color: #ffffff;
+}
+
+.project-tile-button {
+    fill: #2d5319;
+}
