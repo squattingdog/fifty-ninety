@@ -1,0 +1,75 @@
+<template>
+    <div class="slds-page-header slds-page-header_record-home">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-utility-component-customization">
+                            <svg class="slds-icon slds-page-header__icon page-icon" aria-hidden="true" viewBox="0 0 100 100">
+                                <use xlink:href={appResources.pageIcon}></use>
+                            </svg>
+                            <span class="slds-assistive-text">Agile Icon</span>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span>50/90 Project</span>
+                                    <span class="slds-page-header__title"
+                                        title={title}>{project.name}</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-page-header__col-actions">
+                <div class="slds-page-header__controls">
+                    <div class="slds-page-header__control">
+                        <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected"
+                            aria-live="assertive">
+                            <span class="slds-text-not-selected">
+                                <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left"
+                                    aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                </svg>Follow</span>
+                            <span class="slds-text-selected">
+                                <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left"
+                                    aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                </svg>Following</span>
+                            <span class="slds-text-selected-focus">
+                                <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left"
+                                    aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                                </svg>Unfollow</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-page-header__row slds-page-header__row_gutters">
+            <div class="slds-page-header__col-details">
+                <ul class="slds-page-header__detail-row">
+                    <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title" title="Rate of Work">Rate of Work</div>
+                        <div>{project.rateOfWork}</div>
+                    </li>
+                    <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title" title="Projected Duration">Projected Duration</div>
+                        <div>{project.projectedDuration}</div>
+                    </li>
+                    <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title" title="Projected Duration">Buffer</div>
+                        <div>{project.buffer}</div>
+                    </li>
+                    <li class="slds-page-header__detail-block">
+                        <div class="slds-text-title" title="Projected Duration">Projected Duration w/Buffer</div>
+                        <div>{project.projectedDurationWithBuffer}</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>

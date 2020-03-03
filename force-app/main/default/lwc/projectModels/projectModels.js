@@ -15,8 +15,9 @@ export class Project {
     id;
     name;
     description;
-    projectedTime;
-    projectedTimeWithBuffer;
+    buffer;
+    projectedDuration;
+    projectedDurationWithBuffer;
     rateOfWork;
     teamName;
     features;

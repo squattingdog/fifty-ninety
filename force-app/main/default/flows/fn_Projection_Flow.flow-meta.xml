@@ -270,13 +270,13 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>ProjectedTimeWithBuffer__c</field>
+            <field>ProjectedDurationWithBuffer__c</field>
             <value>
                 <elementReference>calc_fn_totalProjection</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>ProjectedTime__c</field>
+            <field>ProjectedDuration__c</field>
             <value>
                 <elementReference>calc_fn_fiftyProjection</elementReference>
             </value>

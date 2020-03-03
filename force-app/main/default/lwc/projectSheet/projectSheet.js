@@ -40,10 +40,12 @@ export default class ProjectSheet extends LightningElement {
         loadStyle(this, projectResources + '/style.css');
         getProjectFeaturesAndLines({projectId: this.projectId})
         .then(data => {
+            console.log('data');
+            console.log(data);
             this.columns = PROJECT_LINE_COLUMNS;
             this.sheet = this.populateProjectItems(data);
+            console.log('sheet object');
             console.log(this.sheet);
-            this.title = `${this.sheet.name} Project Features & Items`;
             this.hasError = false;
             this.isLoading = false;
         }).catch(error => {
@@ -54,13 +56,12 @@ export default class ProjectSheet extends LightningElement {
     }
 
     populateProjectItems(object) {
-        console.log('populating');
         // populate the sheet object
-        const projectSheet = this.populateProjectSheet(object);
+        const projectSheet = this.populateProjectSheet(object.project);
         // populate the related project features
         projectSheet.features = new Array();
-        if(object.Features__r) {
-            object.Features__r.forEach(f => {
+        if(object.features) {
+            object.features.forEach(f => {
                 const feature = new ProjectFeature();
                 feature.id = f.Id;
                 feature.name = f.Name;
@@ -70,8 +71,8 @@ export default class ProjectSheet extends LightningElement {
 
                 // populate feature project items
                 feature.projectItems = new Array();
-                    if(f.FeatureItems__r) {
-                        f.FeatureItems__r.forEach(i => {
+                    if(f.ProjectLines__r) {
+                        f.ProjectLines__r.forEach(i => {
                             const item = this.populateProjectItem(i);
                             feature.projectItems.push(item);
                         });
@@ -79,10 +80,10 @@ export default class ProjectSheet extends LightningElement {
                 projectSheet.features.push(feature);
             });
         }
-        if(object.ProjectLines__r) {
+        if(object.project.ProjectLines__r) {
             // populate project items not related to a feature
             projectSheet.projectItems = new Array();
-            object.ProjectLines__r.forEach(line => {
+            object.project.ProjectLines__r.forEach(line => {
                 const item = this.populateProjectItem(line);
                 projectSheet.projectItems.push(item);
             });
@@ -101,6 +102,7 @@ export default class ProjectSheet extends LightningElement {
         item.workItemName = i.WorkItemName__c;
         item.workItemSize = i.WorkItemSize__c;
         item.workItemStatus = i.WorkItemStatus__c;
+        item.itemOrder = i.ItemOrder__c;
 
         return item;
     }
@@ -110,10 +112,11 @@ export default class ProjectSheet extends LightningElement {
         projectSheet.id = object.Id;
         projectSheet.name = object.Name;
         projectSheet.description = object.Description__c;
-        projectSheet.projectedTime = object.ProjectedTime__c;
-        projectSheet.projectedTimeWithBuffer = object.ProjectedTimeWithBuffer__c;
+        projectSheet.projectedDuration = object.ProjectedDuration__c;
+        projectSheet.projectedDurationWithBuffer = object.ProjectedDurationWithBuffer__c;
         projectSheet.rateOfWork = object.RateOfWork__c;
         projectSheet.teamName = object.Team__r.Name;
+        projectSheet.buffer = object.Buffer__c;
 
         return projectSheet;
     }

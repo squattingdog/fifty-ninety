@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectedDurationWithBuffer__c</fullName>
+    <description>The projected amount of time in work rate units, including the buffer, to complete the work for this project.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The projected time, in Work Rate units, to complete the work.</inlineHelpText>
+    <label>Projected Duration w/Buffer</label>
+    <precision>9</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

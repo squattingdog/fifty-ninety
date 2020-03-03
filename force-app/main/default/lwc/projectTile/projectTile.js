@@ -11,7 +11,7 @@ export default class ProjectTile extends NavigationMixin(LightningElement) {
     @wire(CurrentPageReference) pageRef; //required by pubsub
 
     appResources = {
-        projectIcon: projectResources + `/img/f-n-e.svg`
+        projectIcon: `${projectResources}/img/f-n-e.svg#f_n_e`
     };
 
     onOpenProjectClick() {

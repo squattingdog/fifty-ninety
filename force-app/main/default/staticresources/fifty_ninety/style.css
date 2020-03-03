@@ -24,3 +24,10 @@
 .project-tile-button {
     fill: #2d5319;
 }
+
+/*
+    Project sheet styles
+*/
+.slds-table {
+    padding-right: 50px;
+}

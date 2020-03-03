@@ -19,7 +19,7 @@ public with sharing class FN_ProjectController {
     @AuraEnabled(Cacheable=true)
     public static FN_Project__c[] getAllProjectSheets() {
         return [
-            SELECT Id, Name, Description__c, RateOfWork__c, Team__c, ProjectedTime__c, ProjectedTimeWithBuffer__c, Buffer__c,
+            SELECT Id, Name, Description__c, RateOfWork__c, Team__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, Buffer__c,
                 Team__r.Name
             FROM FN_Project__c 
             WHERE RecordType.Name = 'Sheet' ORDER BY Name
@@ -45,7 +45,7 @@ public with sharing class FN_ProjectController {
         } else {
             searchTerm = '%' + searchTerm + '%';
             return [
-                SELECT Id, Name, Description__c, RateOfWork__c, Team__c, ProjectedTime__c, ProjectedTimeWithBuffer__c, Buffer__c
+                SELECT Id, Name, Description__c, RateOfWork__c, Team__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, Buffer__c
                     , Team__r.Name
                 FROM FN_Project__c 
                 WHERE RecordType.Name = 'Sheet' AND Name LIKE :searchTerm ORDER BY Name LIMIT 50
@@ -63,42 +63,38 @@ public with sharing class FN_ProjectController {
      *  FN_ProjectLine__c[] - an array of project line items.
      */
     @AuraEnabled(Cacheable=false)
-    public static FN_Project__c getProjectFeaturesAndLines(string projectId){
+    public static FN_ProjectModel getProjectFeaturesAndLines(string projectId){
         if(String.isEmpty(projectId)) {
             return null;
         }
 
         FN_Project__c projectSheet = [
-            SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedTime__c, ProjectedTimeWithBuffer__c, RateOfWork__c, Team__r.Name,
-                (SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedTime__c, ProjectedTimeWithBuffer__c, RateOfWork__c
-                    FROM Features__r
-                ),
-                (SELECT Id, Name FROM ProjectLines__r ORDER BY ItemOrder__c)
+            SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, RateOfWork__c, FeatureOrder__c, Team__r.Name,
+                (SELECT Id, Name, Project__c, ItemOrder__c, WorkItemName__c, WorkItemSize__c, WorkItemStatus__c, WorkItem__c, FiftySize__c, NinetySize__c, Details__c
+                    FROM ProjectLines__r
+                    ORDER BY ItemOrder__c
+                )
             FROM FN_Project__c
             WHERE Id = :projectId
         ][0];
-        system.debug('project Sheet');
-        system.debug(projectSheet);
 
-        // get a list of feature IDs in order to get the related line items.
-        Map<Id, integer> featureIdsMap = new Map<Id, integer>();
-        for(Integer idx = 0; idx < projectSheet.Features__r.size(); idx++) {
-            featureIdsMap.put(projectSheet.Features__r[idx].Id, idx);
-        }
-
-        // get the realted line items
-        List<FN_ProjectLine__c> featureLines = [
-            SELECT ID, Name, Project__c, ItemOrder__c, WorkItemName__c, WorkItemSize__c, WorkItemStatus__c, WorkItem__c, FiftySize__c, NinetySize__c, Details__c
-            FROM FN_ProjectLine__c
-            WHERE ID in :featureIdsMap.KeySet()
-            ORDER BY Project__c, ItemOrder__c
+        // get the realted features with line items
+        List<FN_Project__c> featureLines = [
+            SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, RateOfWork__c, FeatureOrder__c,
+                (SELECT ID, Name, Project__c, ItemOrder__c, WorkItemName__c, WorkItemSize__c, WorkItemStatus__c, WorkItem__c, FiftySize__c, NinetySize__c, Details__c
+                    FROM ProjectLines__r
+                    ORDER BY ItemOrder__c
+                )
+            FROM FN_Project__c
+            WHERE ProjectSheet__c = :projectSheet.Id
+            ORDER BY FeatureOrder__c
         ];
 
-        // loop the feature lines and add them to the lines collection of the related feature using the previously populated map to find the correct index
-        for(FN_ProjectLine__c line : featureLines) {
-            projectSheet.Features__r[featureIdsMap.get(line.Project__c)].ProjectLines__r.add(line);
-        }
+        system.debug('Total number of feature lines' + featureLines.size());
+        system.debug(featureLines.size());
 
-        return projectSheet;
+        
+        FN_ProjectModel projectModel = new FN_ProjectModel(projectSheet, featureLines);
+        return projectModel;
     }
 }

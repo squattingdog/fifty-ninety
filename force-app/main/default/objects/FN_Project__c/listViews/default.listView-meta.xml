@@ -5,8 +5,6 @@
     <columns>Description__c</columns>
     <columns>ProjectSheet__c</columns>
     <columns>RateOfWork__c</columns>
-    <columns>ProjectedTime__c</columns>
-    <columns>ProjectedTimeWithBuffer__c</columns>
     <columns>RECORDTYPE</columns>
     <columns>Team__c</columns>
     <filterScope>Mine</filterScope>

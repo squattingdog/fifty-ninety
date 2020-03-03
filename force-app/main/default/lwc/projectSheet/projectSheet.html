@@ -1,8 +1,11 @@
 <template>
-    <lightning-card title={title} icon-name="utility:component_customization">
+    <template if:false={isLoading}>
+        <c-project-sheet-header project={sheet}></c-project-sheet-header>
+    </template>
+    <lightning-card class="project-features">
         <div class="slds-card__body_inner">
             <template if:false={isLoading}>
-                <div>project details here<br/></div>
+                <!-- project line items -->
                 <template if:false={hasError}>
                     <lightning-layout multiple-rows="true" pull-to-boundary="small">
                         <!-- items bound directly to the sheet (not contained in a feature) -->
@@ -25,7 +28,7 @@
                 </template>
             </template>
             <template if:true={isLoading}>
-                display spinner
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
             </template>
         </div>
     </lightning-card>

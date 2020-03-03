@@ -12,9 +12,9 @@
                                 <p class="slds-m-bottom_xx-small">{description}</p>
                                 <p class="slds-m-bottom_xx-small">Id: {project.Id}</p>
                                 <p class="slds-m-bottom_xx-small">Rate: {project.RateOfWork__c}</p>
-                                <p class="slds-m-bottom_xx-small">Duration: {project.ProjectedTime__c}</p>
+                                <p class="slds-m-bottom_xx-small">Duration: {project.ProjectedDuration__c}</p>
                                 <p class="slds-m-bottom_xx-small">Buffer: {project.Buffer__c}</p>
-                                <p class="slds-m-bottom_xx-small">Duration w/Buffer: {project.ProjectedTimeWithBuffer__c}</p>
+                                <p class="slds-m-bottom_xx-small">Duration w/Buffer: {project.ProjectedDurationWithBuffer__c}</p>
                                 <p class="slds-m-bottom_xx-small">Team: {project.Team__r.Name}</p>
                                 <p class="slds-m-bottom_xx-small">SHOW RELATED EPIC INFO HERE</p>
                             </div>
@@ -30,4 +30,5 @@
         </div>
         
     </lightning-card>
+    </template>
 </template>
