@@ -20,6 +20,7 @@ export class Project {
     projectedDurationWithBuffer;
     rateOfWork;
     teamName;
+    teamId;
     features;
     projectItems;
 }

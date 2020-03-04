@@ -116,6 +116,7 @@ export default class ProjectSheet extends LightningElement {
         projectSheet.projectedDurationWithBuffer = object.ProjectedDurationWithBuffer__c;
         projectSheet.rateOfWork = object.RateOfWork__c;
         projectSheet.teamName = object.Team__r.Name;
+        projectSheet.teamId = object.Team__r.Id;
         projectSheet.buffer = object.Buffer__c;
 
         return projectSheet;

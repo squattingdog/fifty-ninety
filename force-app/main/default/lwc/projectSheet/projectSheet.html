@@ -26,6 +26,9 @@
                         An error occurred while loading the project items.
                     </div>
                 </template>
+                <div slot="footer">
+                    <c-project-feature-create team-id={sheet.teamId} project-id={sheet.id}></c-project-feature-create>
+                </div>
             </template>
             <template if:true={isLoading}>
                 <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>

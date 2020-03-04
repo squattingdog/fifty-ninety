@@ -155,7 +155,7 @@
     <enableStreamingApi>true</enableStreamingApi>
     <label>Project</label>
     <nameField>
-        <label>Project Name</label>
+        <label>Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Projects</pluralLabel>
