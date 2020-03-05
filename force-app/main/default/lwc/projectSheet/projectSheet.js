@@ -1,31 +1,36 @@
-/* eslint-disable no-console */
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
+import { CurrentPageReference } from 'lightning/navigation';
 import { ProjectItem, Project, ProjectFeature } from 'c/projectModels';
 import getProjectFeaturesAndLines from '@salesforce/apex/FN_ProjectController.getProjectFeaturesAndLines';
 import { PROJECT_LINE_COLUMNS } from 'c/constants';
 import projectResources from '@salesforce/resourceUrl/fifty_ninety';
 import { loadStyle } from 'lightning/platformResourceLoader';
+import { registerListener, unregisterAllListeners } from 'c/pubsub';
+import { EVENT_PROJECT_FEATURE_CREATED } from 'c/constants';
 
 export default class ProjectSheet extends LightningElement {
     @api projectId;
     @track sheet;
+    @track features;
     @track columns;
     @track hasError = false;
     @track isLoading = true;
     @track error;
     @track title;
+    @track nextFeatureIndex;
+    @wire(CurrentPageReference) pageRef; // required by pubsub
     
     /*
     @wire(getProjectFeaturesAndLines, { projectId: '$projectId' })
-    loadProjectLines({error, data}) {
-        console.log(data);
-        console.log(error);
-        if (error) {
-            this.error = error;
+    loadProjectLines(results) {
+        console.log(results.data);
+        console.log(results.error);
+        if (results.error) {
+            this.error = results.error;
             this.hasError = true;
             this.isLoading = false;
-        } else if(data) {
-            const transformedData = this.populateProjectItems(data);
+        } else if(results.data) {
+            const transformedData = this.populateProjectItems(results.data);
             console.log(transformedData);
             this.sheet = transformedData;
             this.columns = PROJECT_LINE_COLUMNS;
@@ -40,12 +45,12 @@ export default class ProjectSheet extends LightningElement {
         loadStyle(this, projectResources + '/style.css');
         getProjectFeaturesAndLines({projectId: this.projectId})
         .then(data => {
-            console.log('data');
-            console.log(data);
             this.columns = PROJECT_LINE_COLUMNS;
-            this.sheet = this.populateProjectItems(data);
-            console.log('sheet object');
-            console.log(this.sheet);
+            const project = new Project();
+            const projectFeatures = new Array();
+            this.populateProjectItems(data, project, projectFeatures);
+            this.sheet = project;
+            this.features = projectFeatures;
             this.hasError = false;
             this.isLoading = false;
         }).catch(error => {
@@ -53,14 +58,25 @@ export default class ProjectSheet extends LightningElement {
             this.hasError = true;
             this.isLoading = false;
         });
+
+        // register event handlers
+        registerListener(EVENT_PROJECT_FEATURE_CREATED, this.onFeatureCreated, this);
     }
 
-    populateProjectItems(object) {
+    disconnectedCallback() {
+        unregisterAllListeners(this);
+    }
+
+    populateProjectItems(object, projectSheet, projectFeatures) {
+
         // populate the sheet object
-        const projectSheet = this.populateProjectSheet(object.project);
+        this.populateProjectSheet(object.project, projectSheet);
+
         // populate the related project features
-        projectSheet.features = new Array();
         if(object.features) {
+            // capture highest feature order index
+            let featureOrderNumber = 0;
+
             object.features.forEach(f => {
                 const feature = new ProjectFeature();
                 feature.id = f.Id;
@@ -69,30 +85,45 @@ export default class ProjectSheet extends LightningElement {
                 feature.featureOrder = f.FeatureOrder__c;
                 feature.projectId = f.Project__c;
 
+                // check for larger feature order number and save if found
+                if(feature.featureOrder > featureOrderNumber) {
+                    featureOrderNumber = feature.featureOrder;
+                }
+
                 // populate feature project items
                 feature.projectItems = new Array();
                     if(f.ProjectLines__r) {
-                        f.ProjectLines__r.forEach(i => {
-                            const item = this.populateProjectItem(i);
+                        f.ProjectLines__r.forEach(line => {
+                            const item = new ProjectItem(); 
+                            this.populateProjectItem(line, item);
                             feature.projectItems.push(item);
                         });
                     }
-                projectSheet.features.push(feature);
+                projectFeatures.push(feature);
+                // projectSheet.features.push(feature);
             });
+
+            // increment feature order and save on tracked property
+            this.nextFeatureIndex = ++featureOrderNumber;
         }
+
+        // populate project items not related to a feature
         if(object.project.ProjectLines__r) {
-            // populate project items not related to a feature
             projectSheet.projectItems = new Array();
             object.project.ProjectLines__r.forEach(line => {
-                const item = this.populateProjectItem(line);
+                const item = new ProjectItem();
+                this.populateProjectItem(line, item);
                 projectSheet.projectItems.push(item);
             });
         }
-        return projectSheet;
+    }
+
+    onFeatureCreated(feature) {
+        this.features.push(feature);
     }
     
-    populateProjectItem(i) {
-        const item = new ProjectItem();
+    populateProjectItem(i, item) {
+        // const item = new ProjectItem();
         item.id = i.Id;
         item.name = i.Name;
         item.description = i.Details__c;
@@ -104,11 +135,10 @@ export default class ProjectSheet extends LightningElement {
         item.workItemStatus = i.WorkItemStatus__c;
         item.itemOrder = i.ItemOrder__c;
 
-        return item;
+        // return item;
     }
 
-    populateProjectSheet(object) {
-        const projectSheet = new Project();
+    populateProjectSheet(object, projectSheet) {
         projectSheet.id = object.Id;
         projectSheet.name = object.Name;
         projectSheet.description = object.Description__c;
@@ -118,7 +148,5 @@ export default class ProjectSheet extends LightningElement {
         projectSheet.teamName = object.Team__r.Name;
         projectSheet.teamId = object.Team__r.Id;
         projectSheet.buffer = object.Buffer__c;
-
-        return projectSheet;
     }
 }

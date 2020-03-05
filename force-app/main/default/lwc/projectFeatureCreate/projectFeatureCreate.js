@@ -1,14 +1,19 @@
-/* eslint-disable no-debugger */
 /* eslint-disable no-console */
 import { LightningElement, track, wire, api } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { NavigationMixin,CurrentPageReference } from 'lightning/navigation';
+import { fireEvent } from 'c/pubsub';
+import { EVENT_PROJECT_FEATURE_CREATED } from 'c/constants';
+import { ProjectFeature } from 'c/projectModels';
 
-export default class ProjectFeatureCreate extends LightningElement {
+export default class ProjectFeatureCreate extends NavigationMixin(LightningElement) {
     projectInfo;
     @api projectId;
     @api teamId;
+    @api nextFeatureIndex = 0;
     @track projectFeatureRecordTypeId;
+    @wire(CurrentPageReference) pageRef; //required by pubsub
 
     @wire(getObjectInfo, { objectApiName: 'FN_Project__c' })
     loadInfo(result){
@@ -32,17 +37,14 @@ export default class ProjectFeatureCreate extends LightningElement {
     }
 
     onCreateFeatureClick(event) {
-        console.log('add clicked');
         try {
             event.preventDefault();
             const fields = event.detail.fields;
             fields.ProjectSheet__c = this.projectId;
             fields.Team__c = this.teamId;
-            console.log(fields);
+            fields.FeatureOrder__c = this.nextFeatureIndex;
             const form = this.template.querySelector('lightning-record-edit-form');
-            console.log(form);
             form.submit(fields);
-            console.log('sent data');
         } catch (error) {
             // handle error - show toast or something.
             console.log(error);
@@ -51,12 +53,13 @@ export default class ProjectFeatureCreate extends LightningElement {
 
     onCreateFeatureSuccess(event) {
         try {
-            console.log('in success handler');
-            const record = event.payload;
-            console.log(record);
+            const feature = event.detail;
+
+            //increment nextFeatureIndex
+            this.nextFeatureIndex++;
 
             // bubble event and add to sheet's feature collection
-            
+            fireEvent(this.pageRef, EVENT_PROJECT_FEATURE_CREATED, this.translateRecord(feature));
 
             // reset the form
             const fields = this.template.querySelectorAll('lightning-input-field');
@@ -69,7 +72,7 @@ export default class ProjectFeatureCreate extends LightningElement {
             // show toast message
             const toastEvent = new ShowToastEvent({
                 title: 'Feature Created',
-                message: `Feature "${record.Name}" has been added to the sheet`,
+                message: `Feature "${feature.fields.Name.value}" has been added to the sheet`,
                 variant: 'success'
             });
             this.dispatchEvent(toastEvent);
@@ -83,6 +86,17 @@ export default class ProjectFeatureCreate extends LightningElement {
     onCreateFeatureError(event) {
         console.log('onCreateError');
         console.log(event.detail);
-        console.log(JSON.stringify(event.detail));
+        console.log(JSON.stringify(event.detail, null, 2));
+    }
+
+    translateRecord(record) {
+        const feature = new ProjectFeature();
+        feature.id = record.id;
+        feature.name = record.fields.Name.value;
+        feature.description = record.fields.Description__c.value;
+        feature.featureOrder = record.fields.FeatureOrder__c.value;
+        feature.projectId = record.fields.ProjectSheet__c.value;
+        
+        return feature;
     }
 }

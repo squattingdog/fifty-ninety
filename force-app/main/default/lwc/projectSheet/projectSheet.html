@@ -13,7 +13,7 @@
                             <c-project-feature feature={sheet} columns={columns}></c-project-feature>
                         </lightning-layout-item>
                         <!-- features list-->
-                        <template for:each={sheet.features} for:item="feature">
+                        <template for:each={features} for:item="feature">
                             <lightning-layout-item key={feature.id} size="12" class="slds-p-around_x-small">
                                 <!-- project feature -->
                                 <c-project-feature feature={feature} columns={columns}></c-project-feature>
@@ -27,7 +27,7 @@
                     </div>
                 </template>
                 <div slot="footer">
-                    <c-project-feature-create team-id={sheet.teamId} project-id={sheet.id}></c-project-feature-create>
+                    <c-project-feature-create team-id={sheet.teamId} project-id={sheet.id} next-feature-index={nextFeatureIndex}></c-project-feature-create>
                 </div>
             </template>
             <template if:true={isLoading}>
