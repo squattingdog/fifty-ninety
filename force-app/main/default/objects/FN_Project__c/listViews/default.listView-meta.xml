@@ -5,6 +5,7 @@
     <columns>Description__c</columns>
     <columns>ProjectSheet__c</columns>
     <columns>RateOfWork__c</columns>
+    <columns>FeatureOrder__c</columns>
     <columns>RECORDTYPE</columns>
     <columns>Team__c</columns>
     <filterScope>Mine</filterScope>

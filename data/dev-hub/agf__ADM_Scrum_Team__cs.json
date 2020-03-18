@@ -1,0 +1,20 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "agf__ADM_Scrum_Team__c",
+                "referenceId": "agf__ADM_Scrum_Team__cRef2"
+            },
+            "Name": "Speeders",
+            "agf__External_Name__c": "Speeders"
+        },
+        {
+            "attributes": {
+                "type": "agf__ADM_Scrum_Team__c",
+                "referenceId": "agf__ADM_Scrum_Team__cRef3"
+            },
+            "Name": "BT Blockers",
+            "agf__External_Name__c": "BT Blockers"
+        }
+    ]
+}

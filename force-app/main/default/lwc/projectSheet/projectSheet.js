@@ -19,27 +19,6 @@ export default class ProjectSheet extends LightningElement {
     @track title;
     @track nextFeatureIndex;
     @wire(CurrentPageReference) pageRef; // required by pubsub
-    
-    /*
-    @wire(getProjectFeaturesAndLines, { projectId: '$projectId' })
-    loadProjectLines(results) {
-        console.log(results.data);
-        console.log(results.error);
-        if (results.error) {
-            this.error = results.error;
-            this.hasError = true;
-            this.isLoading = false;
-        } else if(results.data) {
-            const transformedData = this.populateProjectItems(results.data);
-            console.log(transformedData);
-            this.sheet = transformedData;
-            this.columns = PROJECT_LINE_COLUMNS;
-            this.isLoading = false;
-            this.hasError = false;
-            this.title = `${this.sheet.name} Project Features & Items`;
-        }
-    }
-    */
 
     connectedCallback() {
         loadStyle(this, projectResources + '/style.css');

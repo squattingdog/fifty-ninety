@@ -1,0 +1,34 @@
+[
+    {
+        "sobject": "agf__ADM_Scrum_Team__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": [
+            "agf__ADM_Scrum_Team__cs.json"
+        ]
+    },
+    {
+        "sobject": "FN_Project__c",
+        "saveRefs": true,
+        "resolveRefs": true,
+        "files": [
+            "FN_ProjectSheet__cs.json"
+        ]
+    },
+    {
+        "sobject": "FN_Project__c",
+        "saveRefs": true,
+        "resolveRefs": true,
+        "files": [
+            "FN_ProjectFeature__cs.json"
+        ]
+    },
+    {
+        "sobject": "FN_ProjectLine__c",
+        "saveRefs": false,
+        "resolveRefs": true,
+        "files": [
+            "FN_ProjectLine__cs.json"
+        ]
+    }
+]

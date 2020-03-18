@@ -4,15 +4,21 @@ export const EVENT_PROJECT_CLICKED = 'projectClicked';
 export const EVENT_PROJECT_LIST_CHANGED = 'projectListChanged';
 export const EVENT_PROJECT_FEATURE_CREATED = 'projectFeatureCreated';
 
+// datatable events
+export const DT_EVENT_CREATE_WORK_ITEM = 'createWorkItem';
+
 // FIELDS
 export const PROJECT_LINE_COLUMNS = [
-    { label: 'Name', fieldName: 'name', initialWidth: 350 },
-    { label: 'Description', fieldName: 'description', initialWidth: 575 },
-    { label: '50-Size', fieldName: 'fiftySize', type: 'number', cellAttributes: {alignment: 'left'} },
-    { label: '90-Size', fieldName: 'ninetySize', type: 'number', cellAttributes: {alignment: 'left'} },
-    { label: 'Work Item', fieldName: 'workItemName', type: 'text' },
-    { label: 'Work Size', fieldName: 'workItemSize', type: 'number', cellAttributes: {alignment: 'left'} },
-    { label: 'Work Status', fieldName: 'workItemStatus', type: 'text' }
+    { label: 'Name', fieldName: 'name', initialWidth: 350, editable: true, sortable: false },
+    { label: 'Description', fieldName: 'description', initialWidth: 575, editable: true, sortable: false },
+    { label: '50-Size', fieldName: 'fiftySize', type: 'number', editable: true, sortable: false, cellAttributes: {alignment: 'left'} },
+    { label: '90-Size', fieldName: 'ninetySize', type: 'number', editable: true, sortable: false, cellAttributes: {alignment: 'left'} },
+    { label: 'Work Item', fieldName: 'workItemName', type: 'text', sortable: false },
+    { label: 'Work Size', fieldName: 'workItemSize', type: 'number', sortable: false, cellAttributes: {alignment: 'left'} },
+    { label: 'Work Status', fieldName: 'workItemStatus', type: 'text', sortable: false },
+    { type: 'action', typeAttributes: { rowActions: [
+        { label: 'Create Work Item', name: DT_EVENT_CREATE_WORK_ITEM }
+    ]}}
 ];
 
 export const PROJECT_DETAIL_SUMMARY_COLUMNS = [

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>FeatureOrder__c</fullName>
+    <defaultValue>0</defaultValue>
     <description>The field used to order the items</description>
     <externalId>false</externalId>
     <inlineHelpText>The a numeric value used to order the features.</inlineHelpText>

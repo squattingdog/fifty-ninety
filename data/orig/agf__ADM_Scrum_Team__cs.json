@@ -1,0 +1,20 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "agf__ADM_Scrum_Team__c",
+                "referenceId": "agf__ADM_Scrum_Team__cRef1"
+            },
+            "Name": "Rockers",
+            "agf__External_Name__c": "Rockers"
+        },
+        {
+            "attributes": {
+                "type": "agf__ADM_Scrum_Team__c",
+                "referenceId": "agf__ADM_Scrum_Team__cRef2"
+            },
+            "Name": "Rollers",
+            "agf__External_Name__c": "Rollers"
+        }
+    ]
+}

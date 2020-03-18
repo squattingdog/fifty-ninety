@@ -1,0 +1,37 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "FN_Project__c",
+                "referenceId": "FN_Project__cRef1"
+            },
+            "Name": "GDPR - MESC",
+            "RecordTypeId": "0123h000000TXyoAAG",
+            "Description__c": "<p>Project Statement &amp; Business Value here.</p>",
+            "RateOfWork__c": 10,
+            "Team__c": "@agf__ADM_Scrum_Team__cRef2"
+        },
+        {
+            "attributes": {
+                "type": "FN_Project__c",
+                "referenceId": "FN_Project__cRef3"
+            },
+            "Name": "EDO",
+            "RecordTypeId": "0123h000000TXyoAAG",
+            "Description__c": "<p>Intergration to EDO for new www form</p>",
+            "RateOfWork__c": 5,
+            "Team__c": "@agf__ADM_Scrum_Team__cRef2"
+        },
+        {
+            "attributes": {
+                "type": "FN_Project__c",
+                "referenceId": "FN_Project__cRef5"
+            },
+            "Name": "Slow-Lane Deploys",
+            "RecordTypeId": "0123h000000TXyoAAG",
+            "Description__c": "<p>Going to only deploy when we have all the requirements done and all of the work done.</p>",
+            "RateOfWork__c": 0,
+            "Team__c": "@agf__ADM_Scrum_Team__cRef3"
+        }
+    ]
+}

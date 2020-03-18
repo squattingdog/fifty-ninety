@@ -1,0 +1,38 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "FN_ProjectLine__c",
+                "referenceId": "FN_ProjectLine__cRef1"
+            },
+            "Name": "Create EDO Stub App",
+            "Project__c": "@FN_Project__cRef2",
+            "ItemOrder__c": 1,
+            "FiftySize__c": 3,
+            "NinetySize__c": 8
+        },
+        {
+            "attributes": {
+                "type": "FN_ProjectLine__c",
+                "referenceId": "FN_ProjectLine__cRef2"
+            },
+            "Name": "Create EDO Automated Tests - Heartbeat test",
+            "Project__c": "@FN_Project__cRef2",
+            "ItemOrder__c": 2,
+            "FiftySize__c": 3,
+            "NinetySize__c": 21
+        },
+        {
+            "attributes": {
+                "type": "FN_ProjectLine__c",
+                "referenceId": "FN_ProjectLine__cRef3"
+            },
+            "Name": "Create Stub App",
+            "Project__c": "@FN_Project__cRef3",
+            "ItemOrder__c": 1,
+            "FiftySize__c": 2,
+            "NinetySize__c": 3,
+            "Details__c": "<p>Create the stub app that will contain the features built in the follow-on work.</p>"
+        }
+    ]
+}

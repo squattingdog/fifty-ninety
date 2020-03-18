@@ -1,0 +1,47 @@
+/* export projects and project lines */
+sfdx force:data:tree:export -q "\
+SELECT Id, Name, RecordType.Id, RecordType.DeveloperName, Description__c, Project__r.Id \
+	RateOfWork__c, FeatureOrder__c, ProjectSheet__c, \
+    (SELECT Id, Name, Project__c, ItemOrder__c, \
+	FiftySize__c, NinetySize__c, Details__c \
+       FROM ProjectLines__r \
+       ORDER BY ItemOrder__c \
+     ) \
+FROM FN_Project__c" \
+--outputdir ./data/2 --plan
+
+
+/* export teams and projects */
+sfdx force:data:tree:export -q "\
+SELECT Id, Name, agf__External_Name__c \
+  ,( \
+    SELECT \
+    Name, RecordType.Id, RecordType.DeveloperName, Description__c, \
+    RateOfWork__c, FeatureOrder__c, ProjectSheet__c \
+    FROM Projects__r \
+  ) \
+FROM agf__ADM_Scrum_Team__c " \
+--outputdir ./data/1 --plan
+
+
+/* Import command  */
+sfdx force:data:tree:import --plan ./data/1/agf__ADM_Scrum_Team__c-FN_Project__c-plan.json -u 
+
+
+
+
+
+
+/* SOQL queries for Dev Console */
+SELECT ID, NAME, SOBjectType, DeveloperName FROM RecordType
+WHERE SObjectType='FN_Project__c'
+
+
+SELECT Id, Name, agf__External_Name__c
+  ,(
+    SELECT
+    Name, RecordType.Id, RecordType.Name, Description__c,
+    RateOfWork__c, FeatureOrder__c
+    FROM Projects__r
+  )
+FROM agf__ADM_Scrum_Team__c 

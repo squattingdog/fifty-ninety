@@ -31,37 +31,12 @@
         </connector>
     </assignments>
     <decisions>
-        <name>fn_ifRecoredTypeIdProvided</name>
-        <label>Record Type Id Provided</label>
-        <locationX>211</locationX>
-        <locationY>274</locationY>
-        <defaultConnector>
-            <targetReference>fn_flow_fnSummary_GetProjectItemRecords</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Record Type Id Provided</defaultConnectorLabel>
-        <rules>
-            <name>fn_recordTypeIdNotProvided</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>var_fnProjectItemRecordTypeId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>fn_getProjectItemRecordType</targetReference>
-            </connector>
-            <label>Record Type Id Not Provided</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>fn_projectIdProvided</name>
         <label>If Project Id Provided</label>
-        <locationX>138</locationX>
-        <locationY>50</locationY>
+        <locationX>194</locationX>
+        <locationY>101</locationY>
         <defaultConnector>
-            <targetReference>fn_ifRecoredTypeIdProvided</targetReference>
+            <targetReference>fn_flow_fnSummary_GetProjectItemRecords</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Project Id Provided</defaultConnectorLabel>
         <rules>
@@ -154,6 +129,9 @@
         <nextValueConnector>
             <targetReference>fn_addProjectBuffer</targetReference>
         </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>fn_GetProjectRecord</targetReference>
+        </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -172,8 +150,8 @@
         <description>gets the fn_projectItem records by fn_projectId</description>
         <name>fn_flow_fnSummary_GetProjectItemRecords</name>
         <label>Get Project Item Records</label>
-        <locationX>217</locationX>
-        <locationY>462</locationY>
+        <locationX>201</locationX>
+        <locationY>347</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>fn_ProjectItemsLoop</targetReference>
@@ -185,13 +163,6 @@
                 <elementReference>var_fnProjectId</elementReference>
             </value>
         </filters>
-        <filters>
-            <field>RecordTypeId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>var_fnProjectItemRecordTypeId</elementReference>
-            </value>
-        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>FN_ProjectLine__c</object>
         <queriedFields>Id</queriedFields>
@@ -200,42 +171,13 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>fn_getProjectItemRecordType</name>
-        <label>Get Project Item Record Type Id</label>
-        <locationX>467</locationX>
-        <locationY>274</locationY>
-        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>fn_flow_fnSummary_GetProjectItemRecords</targetReference>
-        </connector>
-        <filters>
-            <field>Name</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Work Item</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>SobjectType</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>FN_ProjectLine__c</stringValue>
-            </value>
-        </filters>
-        <object>RecordType</object>
-        <outputAssignments>
-            <assignToReference>var_fnProjectItemRecordTypeId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
         <name>fn_GetProjectRecord</name>
         <label>Get Project Record</label>
-        <locationX>213</locationX>
-        <locationY>665</locationY>
+        <locationX>185</locationX>
+        <locationY>713</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>fn_rateOfWorkGTZero</targetReference>
+            <targetReference>fn_saveProjectSizes</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -254,8 +196,8 @@
         <description>saves the calculated values to the Project record</description>
         <name>fn_saveProjectSizes</name>
         <label>Save Project</label>
-        <locationX>211</locationX>
-        <locationY>857</locationY>
+        <locationX>185</locationX>
+        <locationY>841</locationY>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
