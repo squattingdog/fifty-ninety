@@ -9,7 +9,7 @@ export default class ProjectFeature extends LightningElement {
 
     connectedCallback() {
         // @track does not track child collections - need to pull out child collections as a separtely tracked object/array.
-        this.featureItems = Array.from(this.feature.projectItems);
+        this.featureItems = this.feature.projectItems ? Array.from(this.feature.projectItems) : [];
         // console.log('on connected callback');
     }
 

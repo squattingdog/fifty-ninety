@@ -11,6 +11,7 @@
         var oldProjectId = cmp.get("v.projectId");
         if(projectId != oldProjectId) {
             cmp.set("v.projectId", projectId);
+            $A.get('e.force:refreshView').fire();
         }
     }
 })
