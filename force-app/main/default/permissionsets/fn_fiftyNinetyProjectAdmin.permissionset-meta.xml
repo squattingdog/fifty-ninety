@@ -64,6 +64,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>FN_Project__c.Epic__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>FN_Project__c.FeatureOrder__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -85,6 +90,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>FN_Project__c.RateOfWork__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FN_Project__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FN_Project__c.WorkType__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
