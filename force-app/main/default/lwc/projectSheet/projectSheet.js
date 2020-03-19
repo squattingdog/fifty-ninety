@@ -22,6 +22,7 @@ export default class ProjectSheet extends LightningElement {
 
     connectedCallback() {
         loadStyle(this, projectResources + '/style.css');
+        loadStyle(this, projectResources + '/styles/project-feature.css');
         getProjectFeaturesAndLines({projectId: this.projectId})
         .then(data => {
             this.columns = PROJECT_LINE_COLUMNS;

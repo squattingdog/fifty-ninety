@@ -1,39 +1,41 @@
 <template>
-    <template if:false={isLoading}>
-        <c-project-sheet-header project={sheet}></c-project-sheet-header>
-    </template>
-    <lightning-card class="project-features">
-        <div class="slds-card__body_inner">
+    <lightning-layout class="project-features">
+        <lightning-layout-item size="12">
             <template if:false={isLoading}>
-                <!-- project line items -->
-                <template if:false={hasError}>
-                    <lightning-layout multiple-rows="true" pull-to-boundary="small">
-                        <!-- items bound directly to the sheet (not contained in a feature) -->
-                        <lightning-layout-item size="12" class="slds-p-around_x-small">
-                            <c-project-feature feature={sheet} columns={columns}></c-project-feature>
-                        </lightning-layout-item>
-                        <!-- features list-->
-                        <template for:each={features} for:item="feature">
-                            <lightning-layout-item key={feature.id} size="12" class="slds-p-around_x-small">
-                                <!-- project feature -->
-                                <c-project-feature feature={feature} columns={columns}></c-project-feature>
+                <c-project-sheet-header project={sheet}></c-project-sheet-header>
+            </template>
+            <div class="slds-card__body">
+                <template if:false={isLoading}>
+                    <!-- project line items -->
+                    <template if:false={hasError}>
+                        <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                            <!-- items bound directly to the sheet (not contained in a feature) -->
+                            <lightning-layout-item size="12" class="slds-p-around_x-small">
+                                <c-project-feature feature={sheet} columns={columns}></c-project-feature>
                             </lightning-layout-item>
-                        </template>
-                    </lightning-layout>
-                </template>
-                <template if:true={hasError}>
-                    <div class="slds-text-color_error">
-                        An error occurred while loading the project items.
-                        <br><br>Error: {error}
+                            <!-- features list-->
+                            <template for:each={features} for:item="feature">
+                                <lightning-layout-item key={feature.id} size="12" class="slds-p-around_x-small">
+                                    <!-- project feature -->
+                                    <c-project-feature feature={feature} columns={columns}></c-project-feature>
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+                    </template>
+                    <template if:true={hasError}>
+                        <div class="slds-text-color_error">
+                            An error occurred while loading the project items.
+                            <br><br>Error: {error}
+                        </div>
+                    </template>
+                    <div slot="footer">
+                        <c-project-feature-create team-id={sheet.teamId} project-id={sheet.id} next-feature-index={nextFeatureIndex}></c-project-feature-create>
                     </div>
                 </template>
-                <div slot="footer">
-                    <c-project-feature-create team-id={sheet.teamId} project-id={sheet.id} next-feature-index={nextFeatureIndex}></c-project-feature-create>
-                </div>
-            </template>
-            <template if:true={isLoading}>
-                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
-            </template>
-        </div>
-    </lightning-card>
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                </template>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
 </template>

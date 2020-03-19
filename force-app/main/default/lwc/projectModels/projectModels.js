@@ -23,6 +23,10 @@ export class Project {
     teamId;
     features;
     projectItems;
+    workType;
+    status;
+    epicName;
+    epicId;
 }
 
 export class ProjectFeature extends Project { 

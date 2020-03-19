@@ -7,6 +7,27 @@ export const EVENT_PROJECT_FEATURE_CREATED = 'projectFeatureCreated';
 // datatable events
 export const DT_EVENT_CREATE_WORK_ITEM = 'createWorkItem';
 
+// icons
+export const ICON_FNE = 'img/f-n-e.svg#f_n_e';
+export const ICON_KLO = 'img/klo.svg#klo';
+export const ICON_PROJECT = 'img/project.svg#project';
+
+// field values
+export const WORK_TYPE_FNE = 'F&E';
+export const WORK_TYPE_KLO = 'KLO';
+export const WORK_TYPE_PROJECT = 'SteerCo';
+export const STATUS_PLANNED = 'Planned';
+export const STATUS_IN_PROGRESS = 'In Progress';
+export const STATUS_ON_HOLD = 'On Hold';
+export const STATUS_COMPLETE = 'Complete';
+
+// css classes
+export const CSS_PROJECT_STATUS_PLANNED = 'project-status_planned';
+export const CSS_PROJECT_STATUS_ON_HOLD = 'project-status_on-hold';
+export const CSS_PROJECT_STATUS_IN_PROGRESS = 'project-status_in-progress';
+export const CSS_PROJECT_STATUS_COMPLETE = 'project-status_complete';
+
+
 // FIELDS
 export const PROJECT_LINE_COLUMNS = [
     { label: 'Name', fieldName: 'name', initialWidth: 350, editable: true, sortable: false },

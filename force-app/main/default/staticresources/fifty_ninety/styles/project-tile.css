@@ -1,0 +1,42 @@
+
+.project-tile:hover .slds-card {
+    background-color: #6e86a0;
+    color: white;
+}
+
+.project-tile .slds-card__body:hover {
+    cursor: pointer
+}
+
+.project-tile .slds-card {
+    border: 1px solid #636363;
+    background-color: #fbf6f0;
+    transition: border 0.5s, background-color 0.5s;
+}
+
+.project-tile .slds-card__header {
+    padding: .5rem 1rem;
+    border-bottom: 2px solid #636363;
+    border-radius: 4px 4px 0 0;
+    color: #000;
+}
+
+.project-tile-button {
+    fill: #2d5319;
+}
+
+.project-status_planned .slds-card__header  {
+    background-color: #05b1e6d7;
+}
+
+.project-status_in-progress .slds-card__header {
+    background-color: #faf604e7;
+}
+
+.project-status_on-hold .slds-card__header {
+    background-color: #ee3800de;
+}
+
+.project-status_complete .slds-card__header {
+    background-color: #00da1dee;
+}

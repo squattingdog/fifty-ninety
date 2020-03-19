@@ -20,7 +20,7 @@ public with sharing class FN_ProjectController {
     public static FN_Project__c[] getAllProjectSheets() {
         return [
             SELECT Id, Name, Description__c, RateOfWork__c, Team__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, Buffer__c,
-                Team__r.Name
+                Team__r.Name, Status__c, WorkType__c, Epic__r.Name, Epic__r.Id
             FROM FN_Project__c 
             WHERE RecordType.Name = 'Sheet' ORDER BY Name
         ];

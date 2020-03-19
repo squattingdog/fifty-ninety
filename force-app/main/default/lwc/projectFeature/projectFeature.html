@@ -1,15 +1,13 @@
 <template>
-    <lightning-card class="project-tile" title={feature.name}>
+    <lightning-card class="project-feature" title={feature.name}>
         <div slot="actions">
-            <lightning-button-icon icon-name="utility:search" icon-class="project-tile-button" variant="bare" 
+            <lightning-button-icon icon-name="utility:search" icon-class="project-feature-button" variant="bare" 
                 alternative-text="Open record" onclick={onDeleteClick}>
             </lightning-button-icon>
         </div>
-        <div class="slds-card__body_inner">
-		    <div class="slds-p-horizontal_small">
-                <lightning-datatable key-field="id" data={featureItems} columns={columns} 
-                    hide-checkbox-column onrowaction={onRowActionClicked} suppress-bottom-bar></lightning-datatable>
-            </div>
+        <div class="slds-card__body">
+            <lightning-datatable key-field="id" data={featureItems} columns={columns} 
+                hide-checkbox-column onrowaction={onRowActionClicked} suppress-bottom-bar></lightning-datatable>
 		</div>
         <div slot="footer">
             <div class="project-feature-item-add">
@@ -27,9 +25,6 @@
                         </div>
                     </div>
                 </lightning-record-edit-form>
-            </div>
-            <div class="slds-grid slds-gutters">
-                
             </div>
         </div>
 	</lightning-card>

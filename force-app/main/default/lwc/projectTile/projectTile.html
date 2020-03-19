@@ -1,5 +1,5 @@
 <template>
-    <lightning-card title={project.Name} class="project-tile" >
+    <lightning-card title={project.Name} class={appResources.tileClass} >
         <div slot="actions">
             <lightning-button-icon icon-name="utility:search" icon-class="project-tile-button" variant="bare" 
                 alternative-text="Open record" onclick={onOpenProjectClick}>

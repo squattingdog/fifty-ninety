@@ -18,6 +18,7 @@ export default class ProjectList extends LightningElement {
 
     connectedCallback() {
         loadStyle(this, projectResources + '/style.css');
+        loadStyle(this, projectResources + '/styles/project-tile.css');
     }
 
     onSearchTermChanged(event) {

@@ -3,6 +3,7 @@ import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
 import projectResources from '@salesforce/resourceUrl/fifty_ninety';
 import { fireEvent } from 'c/pubsub';
 import { EVENT_PROJECT_CLICKED } from 'c/constants';
+import ProjectService from 'c/projectService';
 
 export default class ProjectTile extends NavigationMixin(LightningElement) {
     @api project;
@@ -10,9 +11,15 @@ export default class ProjectTile extends NavigationMixin(LightningElement) {
     @track recordPageUrl;
     @wire(CurrentPageReference) pageRef; //required by pubsub
 
-    appResources = {
-        projectIcon: `${projectResources}/img/f-n-e.svg#f_n_e`
+    @track appResources = {
+        projectIcon: '',
+        tileClass: ''
     };
+
+    connectedCallback() {
+        this.appResources.projectIcon = `${projectResources}/${ProjectService.getIconPath(this.project.WorkType__c)}`;
+        this.appResources.tileClass = `project-tile ${ProjectService.getStatusCssClass(this.project.Status__c)}`;
+    }
 
     onOpenProjectClick() {
         this[NavigationMixin.Navigate]({
