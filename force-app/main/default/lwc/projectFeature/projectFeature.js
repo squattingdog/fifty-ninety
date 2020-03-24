@@ -1,11 +1,17 @@
 import { LightningElement, api, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { ProjectItem } from 'c/projectModels';
+import { DT_EVENT_CREATE_WORK_ITEM } from 'c/constants';
+import createWorkItem from '@salesforce/apex/FN_ProjectController.createWorkItem';
 
 export default class ProjectFeature extends LightningElement {
-    @api feature;
-    @track featureItems;
+    
     @api columns;
+    @api workRecordTypeId;
+    @api feature;
+    @api productTagId;
+    @api teamId;
+    @track featureItems;
 
     connectedCallback() {
         // @track does not track child collections - need to pull out child collections as a separtely tracked object/array.
@@ -14,7 +20,16 @@ export default class ProjectFeature extends LightningElement {
     }
 
     onRowActionClicked(event) {
-        console.log(event.detail);
+        event.preventDefault();
+        console.log(JSON.stringify(event, null, 2));
+        const menuItemName = event.detail.action.name;
+        switch(menuItemName) {
+            case DT_EVENT_CREATE_WORK_ITEM:
+                // create the work item
+                this.createTheWorkItem(event.detail);
+                break;
+        }
+
     }
 
     onDeleteClicked(event) {
@@ -106,5 +121,47 @@ export default class ProjectFeature extends LightningElement {
         featureItem.name = apiObject.fields.Name.value;
         featureItem.description = apiObject.fields.Details__c.value;
         featureItem.itemOrder = apiObject.fields.ItemOrder__c.value;
+    }
+
+    createTheWorkItem(data) {
+        // save work item and line item
+        const params = {
+            workRecordTypeId: this.workRecordTypeId,
+            productTagId: this.productTagId,
+            projectLineId: data.row.id,
+            name: data.row.name,
+            description: data.row.description,
+            epicId: this.feature.epicId,
+            teamId: this.teamId
+        }
+
+        createWorkItem(params)
+        .then(result => {
+            // update line item properties with work item data.  CreateWorkItem does not query for the projectLine 
+            //   record updates.  Need to handle that here by defaulting some values.  Rely on the user to refresh
+            //   the page for the most up-to-date data.
+            const rowIndex = this.featureItems.findIndex(item => {
+                return item.id == result.Id;
+            });
+
+            const row = this.featureItems[rowIndex];
+            row.workItemName = result.WorkItemName__c;
+            row.workItemStatus = result.WorkItemStatus__c;
+            row.workItemSize = result.WorkItemSize__c;
+
+            this.featureItems = Array.from(this.featureItems);
+
+            // show toast message
+            const toastEvent = new ShowToastEvent({
+                title: 'Work Item Created',
+                message: `"${row.workItemName}" has been created and linked to "${row.name}".`,
+                variant: 'success'
+            });
+            this.dispatchEvent(toastEvent);
+        }).catch(error => {
+            // TODO handler this case.
+            console.log('failed');
+            console.log(error);
+        });
     }
 }

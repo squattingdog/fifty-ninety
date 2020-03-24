@@ -27,6 +27,7 @@ export class Project {
     status;
     epicName;
     epicId;
+    productTagId;
 }
 
 export class ProjectFeature extends Project { 

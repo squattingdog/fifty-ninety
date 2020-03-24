@@ -1,4 +1,5 @@
 import { LightningElement, api, track, wire } from 'lwc';
+import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { CurrentPageReference } from 'lightning/navigation';
 import { ProjectItem, Project, ProjectFeature } from 'c/projectModels';
 import getProjectFeaturesAndLines from '@salesforce/apex/FN_ProjectController.getProjectFeaturesAndLines';
@@ -18,7 +19,28 @@ export default class ProjectSheet extends LightningElement {
     @track error;
     @track title;
     @track nextFeatureIndex;
+    @track workRecordTypeId;
     @wire(CurrentPageReference) pageRef; // required by pubsub
+
+    @wire(getObjectInfo, { objectApiName: 'agf__ADM_Work__c' })
+    loadInfo(result){
+        try {
+            if(result) {
+                if(result.error) {
+                    // handle this condition
+                } else if(result.data && result.data.recordTypeInfos) {
+                    const rtis = result.data.recordTypeInfos;
+                    this.workRecordTypeId = Object.keys(rtis).find(rti => rtis[rti].name === 'User Story');
+                } else {
+                    // handle this condition
+                }
+            } else {
+                // handle this condition
+            }
+        } catch (error) {
+            // handle error
+        }
+    }
 
     connectedCallback() {
         loadStyle(this, projectResources + '/style.css');
@@ -64,6 +86,8 @@ export default class ProjectSheet extends LightningElement {
                 feature.description = f.Descriptoin__c;
                 feature.featureOrder = f.FeatureOrder__c;
                 feature.projectId = f.Project__c;
+                // feature.epicId = f.Epic__r.Id;
+                // feature.epicName = f.Epic__r.Name;
 
                 // check for larger feature order number and save if found
                 if(feature.featureOrder > featureOrderNumber) {
@@ -128,5 +152,8 @@ export default class ProjectSheet extends LightningElement {
         projectSheet.teamName = object.Team__r.Name;
         projectSheet.teamId = object.Team__r.Id;
         projectSheet.buffer = object.Buffer__c;
+        projectSheet.epicId = object.Epic__r.id;
+        projectSheet.epicName = object.Epic__r.Name;
+        projectSheet.productTagId = object.ProductTag__c;
     }
 }

@@ -10,10 +10,6 @@ export default class ProjectSheetHeader extends LightningElement {
     };
 
     connectedCallback() {
-        console.log('header component');
-        console.log(this.project);
         this.title = `${this.project.name} - Features & Items`;
-        console.log(`title: ${this.title}`);
-        console.log(this.appResources);
     }
 }

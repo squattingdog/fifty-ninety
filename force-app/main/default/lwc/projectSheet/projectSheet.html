@@ -11,13 +11,13 @@
                         <lightning-layout multiple-rows="true" pull-to-boundary="small">
                             <!-- items bound directly to the sheet (not contained in a feature) -->
                             <lightning-layout-item size="12" class="slds-p-around_x-small">
-                                <c-project-feature feature={sheet} columns={columns}></c-project-feature>
+                                <c-project-feature feature={sheet} columns={columns} work-record-type-id={workRecordTypeId} product-tag-id={sheet.productTagId} team-id={sheet.teamId}></c-project-feature>
                             </lightning-layout-item>
                             <!-- features list-->
                             <template for:each={features} for:item="feature">
                                 <lightning-layout-item key={feature.id} size="12" class="slds-p-around_x-small">
                                     <!-- project feature -->
-                                    <c-project-feature feature={feature} columns={columns}></c-project-feature>
+                                    <c-project-feature feature={feature} columns={columns} work-record-type-id={workRecordTypeId} product-tag-id={sheet.productTagId} team-id={sheet.teamId}></c-project-feature>
                                 </lightning-layout-item>
                             </template>
                         </lightning-layout>

@@ -94,11 +94,6 @@
         <field>FN_Project__c.RateOfWork__c</field>
         <readable>false</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>FN_Project__c.Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
     <layoutAssignments>
         <layout>FN_ProjectLine__c-Project Line Layout</layout>
     </layoutAssignments>

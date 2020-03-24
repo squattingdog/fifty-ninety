@@ -45,8 +45,8 @@ public with sharing class FN_ProjectController {
         } else {
             searchTerm = '%' + searchTerm + '%';
             return [
-                SELECT Id, Name, Description__c, RateOfWork__c, Team__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, Buffer__c
-                    , Team__r.Name
+                SELECT Id, Name, Description__c, RateOfWork__c, Team__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, Buffer__c,
+                    Team__r.Name, Status__c, WorkType__c, Epic__r.Name, Epic__r.Id
                 FROM FN_Project__c 
                 WHERE RecordType.Name = 'Sheet' AND Name LIKE :searchTerm ORDER BY Name LIMIT 50
             ];
@@ -69,7 +69,8 @@ public with sharing class FN_ProjectController {
         }
 
         FN_Project__c projectSheet = [
-            SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, RateOfWork__c, FeatureOrder__c, Team__r.Name,
+            SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, 
+            RateOfWork__c, FeatureOrder__c, Team__r.Name, Epic__r.Name, ProductTag__c,
                 (SELECT Id, Name, Project__c, ItemOrder__c, WorkItemName__c, WorkItemSize__c, WorkItemStatus__c, WorkItem__c, FiftySize__c, NinetySize__c, Details__c
                     FROM ProjectLines__r
                     ORDER BY ItemOrder__c
@@ -80,7 +81,7 @@ public with sharing class FN_ProjectController {
 
         // get the realted features with line items
         List<FN_Project__c> featureLines = [
-            SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, RateOfWork__c, FeatureOrder__c,
+            SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, RateOfWork__c, FeatureOrder__c, Epic__r.Name,
                 (SELECT ID, Name, Project__c, ItemOrder__c, WorkItemName__c, WorkItemSize__c, WorkItemStatus__c, WorkItem__c, FiftySize__c, NinetySize__c, Details__c
                     FROM ProjectLines__r
                     ORDER BY ItemOrder__c
@@ -89,12 +90,49 @@ public with sharing class FN_ProjectController {
             WHERE ProjectSheet__c = :projectSheet.Id
             ORDER BY FeatureOrder__c
         ];
-
-        system.debug('Total number of feature lines' + featureLines.size());
-        system.debug(featureLines.size());
-
         
         FN_ProjectModel projectModel = new FN_ProjectModel(projectSheet, featureLines);
         return projectModel;
+    }
+
+    /**
+     * Creates a new work record and updates the project line with the newly created work item's ID.
+     * 
+     * Input Params:
+     *  string workRecordTypeId: the record type used to create the work item
+     *  string productTagId: the product tag used to create the work item
+     *  string projectLineId: the related project line for the work item
+     *  string name: used to set the subject of the work item
+     *  string description: used to set the details of the work item
+     *  string epicId: the epic to which the new work item is related
+     *  string teamId: the team to which the new work item is related
+     * 
+     * Returns:
+     *  agf__ADM_Work__c: the newly created work item
+     */
+    @AuraEnabled
+    public static FN_ProjectLine__c createWorkItem(string workRecordTypeId, string productTagId, string projectLineId, string name, string description, string epicId, string teamId) { 
+        agf__ADM_Work__c work = new agf__ADM_Work__c(
+            RecordTypeId = workRecordTypeId,
+            agf__Product_Tag__c = productTagId,
+            agf__Subject__c = name,
+            agf__Details__c = description,
+            agf__Scrum_Team__c = teamId,
+            agf__Epic__c = epicId);
+        
+
+        INSERT work;
+
+        FN_ProjectLine__c line = new FN_ProjectLine__c(
+            Id = projectLineId,
+            WorkItem__c = work.Id
+        );
+        
+        UPDATE line;
+
+        return [SELECT ID, Name, Project__c, ItemOrder__c, WorkItemName__c, WorkItemSize__c, WorkItemStatus__c, WorkItem__c, FiftySize__c, NinetySize__c, Details__c
+            FROM FN_ProjectLine__c
+            WHERE ID = :projectLineId
+        ];
     }
 }
