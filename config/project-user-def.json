@@ -1,0 +1,13 @@
+{
+    "Username": "fn-tester@fn.org",
+    "LastName": "Gidget",
+    "Email": "fn-tester@fn.org",
+    "Alias": "fn-test",
+    "TimeZoneSidKey": "America/Panama",
+    "LocaleSidKey": "en_US",
+    "EmailEncodingKey": "UTF-8",
+    "LanguageLocaleKey": "en_US",
+    "profileName": "System Administrator",
+    "permsets": ["fn_fiftyNinetyProjectAdmin", "Agile_Accelerator_Admin", "Agile_Accelerator_User"],
+    "generatePassword": true
+}

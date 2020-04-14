@@ -1,0 +1,26 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "agf__ADM_Product_Tag__c",
+                "referenceId": "agf__ADM_Product_Tag__cRef1"
+            },
+            "Name": "EDO",
+            "agf__Team__c": "@agf__ADM_Scrum_Team__cRef1"
+        },{
+            "attributes": {
+                "type": "agf__ADM_Product_Tag__c",
+                "referenceId": "agf__ADM_Product_Tag__cRef2"
+            },
+            "Name": "GDPR - MESC",
+            "agf__Team__c": "@agf__ADM_Scrum_Team__cRef1"
+        },{
+            "attributes": {
+                "type": "agf__ADM_Product_Tag__c",
+                "referenceId": "agf__ADM_Product_Tag__cRef3"
+            },
+            "Name": "Send It",
+            "agf__Team__c": "@agf__ADM_Scrum_Team__cRef2"
+        }
+    ]
+}
