@@ -8,6 +8,14 @@
         ]
     },
     {
+        "sobject": "agf__ADM_Epic__c",
+        "saveRefs": true,
+        "resolveRefs": true,
+        "files": [
+            "agf__ADM_Epic__cs.json"
+        ]
+    },
+    {
         "sobject": "agf__ADM_Product_Tag__c",
         "saveRefs": true,
         "resolveRefs": true,

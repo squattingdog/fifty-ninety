@@ -20,7 +20,8 @@
             "Team__c": "@agf__ADM_Scrum_Team__cRef1",
             "ProductTag__c": "@agf__ADM_Product_Tag__cRef1",
             "WorkType__c": "F&E",
-            "Status__c": "Complete"
+            "Status__c": "Complete",
+            "Epic__c": "@agf__ADM_Epic__cRef1"
         },
         {
             "attributes": {
@@ -42,7 +43,8 @@
             "Team__c": "@agf__ADM_Scrum_Team__cRef1",
             "ProductTag__c": "@agf__ADM_Product_Tag__cRef2",
             "WorkType__c": "SteerCo",
-            "Status__c": "In Progress"
+            "Status__c": "In Progress",
+            "Epic__c": "@agf__ADM_Epic__cRef2"
         },
         {
             "attributes": {
@@ -64,7 +66,8 @@
             "Team__c": "@agf__ADM_Scrum_Team__cRef2",
             "ProductTag__c": "@agf__ADM_Product_Tag__cRef3",
             "WorkType__c": "KLO",
-            "Status__c": "Planned"
+            "Status__c": "Planned",
+            "Epic__c": "@agf__ADM_Epic__cRef3"
         }
     ]
 }
