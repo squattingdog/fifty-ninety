@@ -6,12 +6,15 @@ import { NavigationMixin,CurrentPageReference } from 'lightning/navigation';
 import { fireEvent } from 'c/pubsub';
 import { EVENT_PROJECT_FEATURE_CREATED } from 'c/constants';
 import { ProjectFeature } from 'c/projectModels';
+import { createRecordInputFilteredByEditedFields } from 'lightning/uiRecordApi';
 
 export default class ProjectFeatureCreate extends NavigationMixin(LightningElement) {
     projectInfo;
     @api projectId;
     @api teamId;
     @api nextFeatureIndex = 0;
+    @api productTagId;
+    @api epicId;
     @track projectFeatureRecordTypeId;
     @wire(CurrentPageReference) pageRef; //required by pubsub
 
@@ -42,6 +45,8 @@ export default class ProjectFeatureCreate extends NavigationMixin(LightningEleme
             const fields = event.detail.fields;
             fields.ProjectSheet__c = this.projectId;
             fields.Team__c = this.teamId;
+            fields.ProductTag__c = this.productTagId;
+            fields.Epic__c = this.epicId;
             fields.FeatureOrder__c = this.nextFeatureIndex;
             const form = this.template.querySelector('lightning-record-edit-form');
             form.submit(fields);
@@ -96,6 +101,8 @@ export default class ProjectFeatureCreate extends NavigationMixin(LightningEleme
         feature.description = record.fields.Description__c.value;
         feature.featureOrder = record.fields.FeatureOrder__c.value;
         feature.projectId = record.fields.ProjectSheet__c.value;
+        feature.epicId = record.fields.Epic__c.value;
+        feature.productTagId = record.fields.ProductTag__c.value;
         
         return feature;
     }

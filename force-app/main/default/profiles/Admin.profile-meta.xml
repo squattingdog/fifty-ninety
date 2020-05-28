@@ -97,6 +97,17 @@
     <layoutAssignments>
         <layout>FN_ProjectLine__c-Project Line Layout</layout>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>FN_Project__c-Project Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>FN_Project__c-Project Layout</layout>
+        <recordType>FN_Project__c.ProjectFeature</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>FN_Project__c-Project Layout</layout>
+        <recordType>FN_Project__c.ProjectSheet</recordType>
+    </layoutAssignments>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>

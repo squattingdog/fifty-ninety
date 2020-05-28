@@ -70,7 +70,7 @@ public with sharing class FN_ProjectController {
 
         FN_Project__c projectSheet = [
             SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, 
-            RateOfWork__c, FeatureOrder__c, Team__r.Name, Epic__r.Name, ProductTag__c,
+            RateOfWork__c, FeatureOrder__c, Team__r.Name, Epic__r.Name, Epic__r.Id, ProductTag__c,
                 (SELECT Id, Name, Project__c, ItemOrder__c, WorkItemName__c, WorkItemSize__c, WorkItemStatus__c, WorkItem__c, FiftySize__c, NinetySize__c, Details__c
                     FROM ProjectLines__r
                     ORDER BY ItemOrder__c
@@ -81,7 +81,7 @@ public with sharing class FN_ProjectController {
 
         // get the realted features with line items
         List<FN_Project__c> featureLines = [
-            SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, RateOfWork__c, FeatureOrder__c, Epic__r.Name,
+            SELECT Id, Name, RecordType.Name, Buffer__c, Description__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, RateOfWork__c, FeatureOrder__c, Epic__r.Name, Epic__r.Id,
                 (SELECT ID, Name, Project__c, ItemOrder__c, WorkItemName__c, WorkItemSize__c, WorkItemStatus__c, WorkItem__c, FiftySize__c, NinetySize__c, Details__c
                     FROM ProjectLines__r
                     ORDER BY ItemOrder__c

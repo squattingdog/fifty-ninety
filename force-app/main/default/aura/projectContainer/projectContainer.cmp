@@ -3,4 +3,4 @@
     <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
     <aura:handler name="change" value="{!v.pageReference}" action="{!c.reInit}" />
     <c:projectSheet projectId="{!v.projectId}" />
-</aura:component>	
+</aura:component>

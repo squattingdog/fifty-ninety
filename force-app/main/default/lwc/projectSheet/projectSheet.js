@@ -47,16 +47,26 @@ export default class ProjectSheet extends LightningElement {
         loadStyle(this, projectResources + '/styles/project-feature.css');
         getProjectFeaturesAndLines({projectId: this.projectId})
         .then(data => {
-            this.columns = PROJECT_LINE_COLUMNS;
-            const project = new Project();
-            const projectFeatures = new Array();
-            this.populateProjectItems(data, project, projectFeatures);
-            this.sheet = project;
-            this.features = projectFeatures;
-            this.hasError = false;
-            this.isLoading = false;
-        }).catch(error => {
-            this.error = error;
+            try {
+                this.columns = PROJECT_LINE_COLUMNS;
+                const project = new Project();
+                const projectFeatures = new Array();
+                this.populateProjectItems(data, project, projectFeatures);
+                this.sheet = project;
+                this.features = projectFeatures;
+                this.hasError = false;
+                this.isLoading = false;
+            } catch(err) {
+                console.log('projectSheet::connectedCallback Error')
+                console.log(err);
+                this.error = err;
+                this.hasError = true;
+                this.isLoading = false;
+            }
+        }).catch(err => {
+            console.log('projectSheet::connectedCallback::catch Error')
+            console.log(err);
+            this.error = err;
             this.hasError = true;
             this.isLoading = false;
         });
@@ -70,7 +80,6 @@ export default class ProjectSheet extends LightningElement {
     }
 
     populateProjectItems(object, projectSheet, projectFeatures) {
-
         // populate the sheet object
         this.populateProjectSheet(object.project, projectSheet);
 
@@ -86,14 +95,19 @@ export default class ProjectSheet extends LightningElement {
                 feature.description = f.Descriptoin__c;
                 feature.featureOrder = f.FeatureOrder__c;
                 feature.projectId = f.Project__c;
-                // feature.epicId = f.Epic__r.Id;
-                // feature.epicName = f.Epic__r.Name;
+                if (feature.Epic__r) {
+                    feature.epicId = f.Epic__r.Id;
+                    feature.epicName = f.Epic__r.Name;
+                } else {
+                    feature.epicId = projectSheet.epicId;
+                    feature.epicName = projectSheet.epicName;
+                }
 
                 // check for larger feature order number and save if found
                 if(feature.featureOrder > featureOrderNumber) {
                     featureOrderNumber = feature.featureOrder;
                 }
-
+                
                 // populate feature project items
                 feature.projectItems = new Array();
                     if(f.ProjectLines__r) {
@@ -104,7 +118,6 @@ export default class ProjectSheet extends LightningElement {
                         });
                     }
                 projectFeatures.push(feature);
-                // projectSheet.features.push(feature);
             });
 
             // increment feature order and save on tracked property
@@ -127,7 +140,6 @@ export default class ProjectSheet extends LightningElement {
     }
     
     populateProjectItem(i, item) {
-        // const item = new ProjectItem();
         item.id = i.Id;
         item.name = i.Name;
         item.description = i.Details__c;
@@ -138,8 +150,6 @@ export default class ProjectSheet extends LightningElement {
         item.workItemSize = i.WorkItemSize__c;
         item.workItemStatus = i.WorkItemStatus__c;
         item.itemOrder = i.ItemOrder__c;
-
-        // return item;
     }
 
     populateProjectSheet(object, projectSheet) {
@@ -152,7 +162,7 @@ export default class ProjectSheet extends LightningElement {
         projectSheet.teamName = object.Team__r.Name;
         projectSheet.teamId = object.Team__r.Id;
         projectSheet.buffer = object.Buffer__c;
-        projectSheet.epicId = object.Epic__r.id;
+        projectSheet.epicId = object.Epic__r.Id;
         projectSheet.epicName = object.Epic__r.Name;
         projectSheet.productTagId = object.ProductTag__c;
     }

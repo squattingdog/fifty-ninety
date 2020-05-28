@@ -19,7 +19,7 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <label>Project Tracking</label>
+    <label>Agile Projection</label>
     <navType>Standard</navType>
     <tabs>standard-home</tabs>
     <tabs>agf__ADM_Work__c</tabs>

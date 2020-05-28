@@ -2,6 +2,7 @@
 export const EVENT_PROJECT_TEST = 'projectTest';
 export const EVENT_PROJECT_CLICKED = 'projectClicked';
 export const EVENT_PROJECT_LIST_CHANGED = 'projectListChanged';
+export const EVENT_PROJECT_CREATED = 'projectCreated';
 export const EVENT_PROJECT_FEATURE_CREATED = 'projectFeatureCreated';
 
 // datatable events
