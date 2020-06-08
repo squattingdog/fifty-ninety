@@ -1,0 +1,21 @@
+<template>
+    <lightning-card title={projection.Name} class={appResources.tileClass} >
+        <div slot="actions">
+            <lightning-button-icon icon-name="utility:search" icon-class="projection-tile-button" variant="bare" 
+                alternative-text="Open record" onclick={onOpenProjectionClick}>
+            </lightning-button-icon>
+        </div>
+		<div class="slds-p-horizontal_small" onclick={onProjectionTileClick}>
+			<div class="slds-media">
+				<div class="slds-media__figure">
+					<img src={appResources.projectionIcon} alt="Projection profile" class="projection-icon"/>
+				</div>
+				<div class="slds-media__body">
+					<p class="slds-m-bottom_xx-small">Rate: {projection.RateOfWork__c}</p>
+					<p class="slds-m-bottom_xx-small">Duration: {projection.ProjectedTimeWithBuffer__c}</p>
+					<p class="slds-m-bottom_xx-small">Team: {projection.Team__r.Name}</p>
+				</div>
+			</div>
+		</div>
+	</lightning-card>
+</template>

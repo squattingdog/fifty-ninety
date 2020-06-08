@@ -1,0 +1,39 @@
+<template>
+    <lightning-card title="Projection Details" >
+        <div class="slds-card__body_inner">
+            <template if:true={hasProjection}>
+                <lightning-card title={projection.Name}>
+                    <div class="slds-p-horizontal_small">
+                        <div class="slds-media">
+                            <div class="slds-media__figure">
+                                <img src={appResources.projectionIcon} alt="Projections profile" class="projection-icon"/>
+                            </div>
+                            <div class="slds-media__body">
+                                <p class="slds-m-bottom_xx-small">{description}</p>
+                                <p class="slds-m-bottom_xx-small">Id: {projection.Id}</p>
+                                <p class="slds-m-bottom_xx-small">Rate: {projection.RateOfWork__c}</p>
+                                <p class="slds-m-bottom_xx-small">Duration: {projection.ProjectedDuration__c}</p>
+                                <p class="slds-m-bottom_xx-small">Buffer: {projection.Buffer__c}</p>
+                                <p class="slds-m-bottom_xx-small">Duration w/Buffer: {projection.ProjectedDurationWithBuffer__c}</p>
+                                <p class="slds-m-bottom_xx-small">Team: {projection.Team__r.Name}</p>
+                                <p class="slds-m-bottom_xx-small">Status: {projection.Status__c}</p>
+                                <p class="slds-m-bottom_xx-small">Type: {projection.WorkType__c}</p>
+                                <!--
+                                    <p class="slds-m-bottom_xx-small">SHOW RELATED EPIC INFO HERE</p>
+                                    this is changing.  An epic will not be the contain for the overall projection. 
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </lightning-card>
+            </template>
+            <template if:false={hasProjection}>
+                <div>
+                    Select a projection to view its data.
+                </div>
+            </template>
+        </div>
+        
+    </lightning-card>
+    </template>
+</template>

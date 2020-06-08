@@ -1,0 +1,33 @@
+.projection-feature .slds-card__body:hover {
+    cursor: pointer
+}
+
+.projection-feature .slds-card {
+    border: 1px solid #363636;
+    background-color: #d4d4d4;
+    transition: border 0.5s, background-color 0.5s;
+}
+
+.projection-feature .slds-card__header {
+    padding: .5rem 1rem;
+    border-bottom: 2px solid #2b045e;
+    border-radius: 4px 4px 0 0;
+    background-color: #043c8f;
+    color: #ffffff;
+    margin: 0;
+}
+
+.projection-feature .slds-card__body {
+    margin: 0;
+}
+
+.projection-feature .slds-card__footer {
+    padding-top: 0;
+    margin-top: 0;
+    border-top: 0;
+}
+
+.projection-feature .projection-feature-button {
+    fill: #fff;
+}
+

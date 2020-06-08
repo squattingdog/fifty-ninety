@@ -1,0 +1,47 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "FN_Projection__c",
+                "referenceId": "FN_Projection__cRef1"
+            },
+            "Name": "test festaure",
+            "RecordType": {
+                "attributes": {
+                    "type": "RecordType",
+                    "url": "/services/data/v48.0/sobjects/RecordType/012R0000001YOdWIAW"
+                },
+                "Id": "012R0000001YOdWIAW",
+                "DeveloperName": "ProjectionFeature"
+            },
+            "FeatureOrder__c": 2,
+            "ProjectionSheet__c": "@FN_Projection__cRef3",
+            "Team__c": "@agf__ADM_Scrum_Team__cRef1",
+            "ProductTag__c": "@agf__ADM_Product_Tag__cRef1",
+            "WorkType__c": "F&E",
+            "Status__c": "Complete"
+        },
+        {
+            "attributes": {
+                "type": "FN_Projection__c",
+                "referenceId": "FN_Projection__cRef2"
+            },
+            "Name": "Marshall App",
+            "RecordType": {
+                "attributes": {
+                    "type": "RecordType",
+                    "url": "/services/data/v48.0/sobjects/RecordType/012R0000001YOdWIAW"
+                },
+                "Id": "012R0000001YOdWIAW",
+                "DeveloperName": "ProjectionFeature"
+            },
+            "Description__c": "<p>An app that will contain the sequencing logic for the EDO process.</p>",
+            "FeatureOrder__c": 1,
+            "ProjectionSheet__c": "@FN_Projection__cRef3",
+            "Team__c": "@agf__ADM_Scrum_Team__cRef1",
+            "ProductTag__c": "@agf__ADM_Product_Tag__cRef1",
+            "WorkType__c": "F&E",
+            "Status__c": "Complete"
+        }
+    ]
+}

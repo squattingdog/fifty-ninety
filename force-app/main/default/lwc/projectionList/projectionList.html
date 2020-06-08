@@ -1,0 +1,40 @@
+<template>
+    <div aria-hidden={showModal}>
+        <lightning-card title="Projections" icon-name="utility:component_customization">
+            <div slot="actions">
+                <!-- new sheet button & modal -->
+                <c-projection-sheet-create></c-projection-sheet-create>
+            </div>
+            <div class="slds-card__body_inner">
+                <template if:true={projections.data}>
+                    <!-- Search bar -->
+                    <lightning-input type="search" onchange={onSearchTermChanged} variant="label-hidden" class="slds-m-bottom_small"
+                        label="Search Projections" placeholder="Search for Projections" value={searchTerm}>
+                    </lightning-input>
+                    <!-- projections listing -->
+                    <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                        <template for:each={projections.data} for:item="projection">
+                            <lightning-layout-item key={projection.Id} size="3" class="slds-p-around_x-small">
+                                <!-- projection tile -->
+                                <c-projection-tile projection={projection}></c-projection-tile>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+
+                    <!-- no projections found -->
+                    <template if:false={hasResults}>
+                        <div class="slds-align_absolute-center slds-m-vertical_small">
+                            There are not any projections.  Create a new projection.
+                        </div>
+                    </template>
+                </template>
+                <template if:true={projections.error}>
+                    <div class="slds-text-color_error">
+                        An error occurred while loading the list of projections.
+                        <p>{customErrorMessage}</p>
+                    </div>
+                </template>
+            </div>
+        </lightning-card>
+    </div>
+</template>

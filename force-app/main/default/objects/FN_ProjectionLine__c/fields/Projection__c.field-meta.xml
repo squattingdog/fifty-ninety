@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Projection__c</fullName>
+    <description>The related projection</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The related projection</inlineHelpText>
+    <label>Projection</label>
+    <referenceTo>FN_Projection__c</referenceTo>
+    <relationshipLabel>Projection Lines</relationshipLabel>
+    <relationshipName>ProjectionLines</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

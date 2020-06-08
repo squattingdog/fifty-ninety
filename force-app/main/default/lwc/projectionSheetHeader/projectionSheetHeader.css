@@ -1,0 +1,16 @@
+.page-icon, .page-icon.slds-icon_container {
+    height: 50px;
+    width: 50px;
+}
+
+.page-icon.slds-icon {
+    fill: #043c8f;
+}
+
+.slds-page-header__detail-row {
+    font-size: 16px;
+}
+
+.slds-page-header {
+    margin-bottom: 10px;
+}

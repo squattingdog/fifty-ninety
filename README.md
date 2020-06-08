@@ -1,5 +1,5 @@
 # Project Summary
-This project provides the ability to project a team's capacity in a quick manner without the need to create work items.  Work Items can then be generated from the line items as necessary.
+This project provides an Agile team with a manner to determine a projection of the team's capacity in a quick manner without the need to create work items.  Work Items can then be generated from the line items as necessary.
 
 ## Dev Setup
 In order to complete the developer setup steps, it is necessary to create a dev-hub org.  The best way to do this is to create a developer org and then enable the dev-hub feature.  Creating a dev-hub org from the dx signup form will create a trial org that will expire.  Developer orgs do not expire and for this reason are a better option for using dev-hub.
@@ -25,7 +25,7 @@ sfdx force:source:push
 #### Assign Permissions to the User
 Assign the admin permission set to your user so that the user has read/write access to the objects and fields.
 ```console
-sfdx force:user:permset:assign -n fn_fiftyNinetyProjectAdmin
+sfdx force:user:permset:assign -n fn_fiftyNinetyProjectionAdmin
 ```
 
 ### Prime the Data

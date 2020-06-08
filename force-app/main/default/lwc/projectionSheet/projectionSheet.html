@@ -1,0 +1,42 @@
+<template>
+    <lightning-layout class="projection-features">
+        <lightning-layout-item size="12">
+            <template if:false={isLoading}>
+                <c-projection-sheet-header if:false={hasError} projection={sheet}></c-projection-sheet-header>
+            </template>
+            <div class="slds-card__body">
+                <template if:false={isLoading}>
+                    <!-- projection line items -->
+                    <template if:false={hasError}>
+                        <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                            <!-- items bound directly to the sheet (not contained in a feature) -->
+                            <lightning-layout-item size="12" class="slds-p-around_x-small">
+                                <c-projection-feature feature={sheet} columns={columns} work-record-type-id={workRecordTypeId} product-tag-id={sheet.productTagId} team-id={sheet.teamId}></c-projection-feature>
+                            </lightning-layout-item>
+                            <!-- features list-->
+                            <template for:each={features} for:item="feature">
+                                <lightning-layout-item key={feature.id} size="12" class="slds-p-around_x-small">
+                                    <!-- projection feature -->
+                                    <c-projection-feature feature={feature} columns={columns} work-record-type-id={workRecordTypeId} product-tag-id={sheet.productTagId} team-id={sheet.teamId}></c-projection-feature>
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+                    </template>
+                    <template if:true={hasError}>
+                        <div class="slds-text-color_error">
+                            An error occurred while loading the project items.
+                            <br><br>Error: {error}
+                        </div>
+                    </template>
+                    <div slot="footer">
+                        <c-projection-feature-create if:false={hasError} team-id={sheet.teamId} projection-id={sheet.id} next-feature-index={nextFeatureIndex}
+                            epic-id={sheet.epicId} product-tag-id={sheet.productTagId}></c-projection-feature-create>
+                    </div>
+                </template>
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                </template>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

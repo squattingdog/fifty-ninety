@@ -1,36 +1,40 @@
 // EVENTS
-export const EVENT_PROJECT_TEST = 'projectTest';
-export const EVENT_PROJECT_CLICKED = 'projectClicked';
-export const EVENT_PROJECT_LIST_CHANGED = 'projectListChanged';
-export const EVENT_PROJECT_CREATED = 'projectCreated';
-export const EVENT_PROJECT_FEATURE_CREATED = 'projectFeatureCreated';
+export const EVENT_PROJECTION_CLICKED = 'projectionClicked';
+export const EVENT_PROJECTION_LIST_CHANGED = 'projectionListChanged';
+export const EVENT_PROJECTION_CREATED = 'projectionCreated';
+export const EVENT_PROJECTION_FEATURE_CREATED = 'projectionFeatureCreated';
 
 // datatable events
 export const DT_EVENT_CREATE_WORK_ITEM = 'createWorkItem';
 
-// icons
-export const ICON_FNE = 'img/f-n-e.svg#f_n_e';
-export const ICON_KLO = 'img/klo.svg#klo';
-export const ICON_PROJECT = 'img/project.svg#project';
-
 // field values
 export const WORK_TYPE_FNE = 'F&E';
 export const WORK_TYPE_KLO = 'KLO';
-export const WORK_TYPE_PROJECT = 'SteerCo';
+export const WORK_TYPE_STEER_CO = 'SteerCo';
 export const STATUS_PLANNED = 'Planned';
 export const STATUS_IN_PROGRESS = 'In Progress';
 export const STATUS_ON_HOLD = 'On Hold';
 export const STATUS_COMPLETE = 'Complete';
 
+// style sheets
+export const CSS_GENERIC = '/style.css';
+export const CSS_PROJECTION_FEATURE = '/styles/projection-feature.css';
+export const CSS_PROJECTION_TILE = '/styles/projection-tile.css';
+
 // css classes
-export const CSS_PROJECT_STATUS_PLANNED = 'project-status_planned';
-export const CSS_PROJECT_STATUS_ON_HOLD = 'project-status_on-hold';
-export const CSS_PROJECT_STATUS_IN_PROGRESS = 'project-status_in-progress';
-export const CSS_PROJECT_STATUS_COMPLETE = 'project-status_complete';
+export const CSS_PROJECTION_STATUS_PLANNED = 'projection-status_planned';
+export const CSS_PROJECTION_STATUS_ON_HOLD = 'projection-status_on-hold';
+export const CSS_PROJECTION_STATUS_IN_PROGRESS = 'projection-status_in-progress';
+export const CSS_PROJECTION_STATUS_COMPLETE = 'projection-status_complete';
+
+// icons
+export const ICON_FNE = 'img/f-n-e.svg#f_n_e';
+export const ICON_KLO = 'img/klo.svg#klo';
+export const ICON_STEER_CO = 'img/steerco.svg#steerco';
 
 
 // FIELDS
-export const PROJECT_LINE_COLUMNS = [
+export const PROJECTION_LINE_COLUMNS = [
     { label: 'Name', fieldName: 'name', initialWidth: 350, editable: true, sortable: false },
     { label: 'Description', fieldName: 'description', initialWidth: 575, editable: true, sortable: false },
     { label: '50-Size', fieldName: 'fiftySize', type: 'number', editable: true, sortable: false, cellAttributes: {alignment: 'left'} },
@@ -43,14 +47,14 @@ export const PROJECT_LINE_COLUMNS = [
     ]}}
 ];
 
-export const PROJECT_DETAIL_SUMMARY_COLUMNS = [
+export const PROJECTION_DETAIL_SUMMARY_COLUMNS = [
     { label: 'Work Rate', fieldName: 'rateOfWork', type: 'number'},
     { label: 'Projected Duration', fieldName: 'projectedDuration', type: 'number' },
     { label: 'Buffer', fieldName: 'buffer', type: 'number' },
     { label: 'Projected Duration w/Buffer', fieldName: 'projectedDurationWithBuffer', type: 'number' }
 ];
 
-export const PROJECT_DETAIL_SUMMARY_COLUMNS_ORG = [
+export const PROJECTION_DETAIL_SUMMARY_COLUMNS_ORG = [
     { label: 'Work Rate', fieldName: 'RateOfWork__c', type: 'number', cellAttributes: { alignment: 'center' } },
     { label: 'Projected Duration', fieldName: 'ProjectedDuration__c', type: 'number', cellAttributes: { alignment: 'center' } },
     { label: 'Buffer', fieldName: 'Buffer__c', type: 'number', cellAttributes: { alignment: 'center' } },

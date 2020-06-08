@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectionSheet</fullName>
+    <active>true</active>
+    <description>A new projection sheet that contains projection line items optionally grouped by feature</description>
+    <label>Sheet</label>
+</RecordType>

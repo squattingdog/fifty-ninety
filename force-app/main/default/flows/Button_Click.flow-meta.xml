@@ -30,7 +30,7 @@
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>FN_Project__c</object>
+        <object>FN_Projection__c</object>
         <queriedFields>Id</queriedFields>
         <queriedFields>Name</queriedFields>
         <queriedFields>Team__c</queriedFields>

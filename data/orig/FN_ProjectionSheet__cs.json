@@ -1,0 +1,73 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "FN_Projection__c",
+                "referenceId": "FN_Projection__cRef3"
+            },
+            "Name": "EDO",
+            "RecordType": {
+                "attributes": {
+                    "type": "RecordType",
+                    "url": "/services/data/v48.0/sobjects/RecordType/012R0000001YOdXIAW"
+                },
+                "Id": "012R0000001YOdXIAW",
+                "DeveloperName": "ProjectionSheet"
+            },
+            "Description__c": "<p>Intergration to EDO for new www form</p>",
+            "RateOfWork__c": 5,
+            "FeatureOrder__c": 0,
+            "Team__c": "@agf__ADM_Scrum_Team__cRef1",
+            "ProductTag__c": "@agf__ADM_Product_Tag__cRef1",
+            "WorkType__c": "F&E",
+            "Status__c": "Complete",
+            "Epic__c": "@agf__ADM_Epic__cRef1"
+        },
+        {
+            "attributes": {
+                "type": "FN_Projection__c",
+                "referenceId": "FN_Projection__cRef4"
+            },
+            "Name": "GDPR - MESC",
+            "RecordType": {
+                "attributes": {
+                    "type": "RecordType",
+                    "url": "/services/data/v48.0/sobjects/RecordType/012R0000001YOdXIAW"
+                },
+                "Id": "012R0000001YOdXIAW",
+                "DeveloperName": "ProjectionSheet"
+            },
+            "Description__c": "<p>Project Statement &amp; Business Value here.</p>",
+            "RateOfWork__c": 10,
+            "FeatureOrder__c": 0,
+            "Team__c": "@agf__ADM_Scrum_Team__cRef1",
+            "ProductTag__c": "@agf__ADM_Product_Tag__cRef2",
+            "WorkType__c": "SteerCo",
+            "Status__c": "In Progress",
+            "Epic__c": "@agf__ADM_Epic__cRef2"
+        },
+        {
+            "attributes": {
+                "type": "FN_Projection__c",
+                "referenceId": "FN_Projection__cRef5"
+            },
+            "Name": "Some Other Projection",
+            "RecordType": {
+                "attributes": {
+                    "type": "RecordType",
+                    "url": "/services/data/v48.0/sobjects/RecordType/012R0000001YOdXIAW"
+                },
+                "Id": "012R0000001YOdXIAW",
+                "DeveloperName": "ProjectionSheet"
+            },
+            "Description__c": "<p>Got to get some deetz.</p>",
+            "RateOfWork__c": 0,
+            "FeatureOrder__c": 0,
+            "Team__c": "@agf__ADM_Scrum_Team__cRef2",
+            "ProductTag__c": "@agf__ADM_Product_Tag__cRef3",
+            "WorkType__c": "KLO",
+            "Status__c": "Planned",
+            "Epic__c": "@agf__ADM_Epic__cRef3"
+        }
+    ]
+}
