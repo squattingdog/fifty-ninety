@@ -1,7 +1,9 @@
 import { LightningElement, api, track } from 'lwc';
+import { updateRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { ProjectionItem } from 'c/projectionModels';
 import { DT_EVENT_CREATE_WORK_ITEM } from 'c/constants';
+import FeatureItemMapper from 'c/featureItemMapper';
 import apexCreateWorkItem from '@salesforce/apex/FN_ProjectionController.createWorkItem';
 
 export default class ProjectionFeature extends LightningElement {
@@ -12,10 +14,56 @@ export default class ProjectionFeature extends LightningElement {
     @api productTagId;
     @api teamId;
     @track featureItems;
+    featureUpdateMap = new Map();
 
     connectedCallback() {
         // @track does not track child collections - need to pull out child collections as a separtely tracked object/array.
         this.featureItems = this.feature.projectionItems ? Array.from(this.feature.projectionItems) : [];
+    }
+
+    onCellChanged(event) {
+        const draftValues = event.detail.draftValues[0];
+        console.log(`Changing: ${JSON.stringify(draftValues, null, 2)}`);
+        console.log(`row id: ${draftValues.id}`);
+        console.log(`map has Id? ${this.featureUpdateMap.has(draftValues.id)}`);
+
+        try{
+            const featureLineItem = {
+                'fields': FeatureItemMapper.fromProjectionItem(draftValues)
+            };
+
+            console.log(`featureLineItem: ${JSON.stringify(featureLineItem, null, 2)}`);
+       
+            updateRecord(featureLineItem)
+            .then(() => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Updated feature line',
+                        variant: 'success'
+                    })
+                );
+            })
+            .catch(ex => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error Saving Record',
+                        message: `error message: error updating record with values: ${JSON.stringify(featureLineItem, null, 2)}`,
+                        variant: 'error'
+                    })
+                );
+                console.log(ex);
+            });
+        } catch(ex) {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Page Exception',
+                    message: 'An exception occurred while process the action.',
+                    variant: 'error'
+                })
+            );
+            console.log(ex);
+        }
     }
 
     onRowActionClicked(event) {
@@ -28,7 +76,6 @@ export default class ProjectionFeature extends LightningElement {
                 this.createTheWorkItem(event.detail);
                 break;
         }
-
     }
 
     onDeleteClicked(event) {

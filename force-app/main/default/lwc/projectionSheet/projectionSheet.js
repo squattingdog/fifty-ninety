@@ -1,13 +1,12 @@
 import { LightningElement, api, track, wire } from 'lwc';
-import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { CurrentPageReference } from 'lightning/navigation';
-import { ProjectionItem, Projection, ProjectionFeature } from 'c/projectionModels';
-import getProjectionFeaturesAndLines from '@salesforce/apex/FN_ProjectionController.getProjectionFeaturesAndLines';
-import { PROJECTION_LINE_COLUMNS, CSS_PROJECTION_FEATURE, CSS_GENERIC } from 'c/constants';
-import projectionResources from '@salesforce/resourceUrl/fifty_ninety';
 import { loadStyle } from 'lightning/platformResourceLoader';
+import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import getProjectionFeaturesAndLines from '@salesforce/apex/FN_ProjectionController.getProjectionFeaturesAndLines';
+import projectionResources from '@salesforce/resourceUrl/fifty_ninety';
+import { EVENT_PROJECTION_FEATURE_CREATED, PROJECTION_LINE_COLUMNS, CSS_PROJECTION_FEATURE, CSS_GENERIC } from 'c/constants';
+import { ProjectionItem, Projection, ProjectionFeature } from 'c/projectionModels';
 import { registerListener, unregisterAllListeners } from 'c/pubsub';
-import { EVENT_PROJECTION_FEATURE_CREATED } from 'c/constants';
 
 export default class ProjectionSheet extends LightningElement {
     @api projectionId;

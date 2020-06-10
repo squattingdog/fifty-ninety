@@ -6,7 +6,7 @@
             </lightning-button-icon>
         </div>
         <div class="slds-card__body">
-            <lightning-datatable key-field="id" data={featureItems} columns={columns} 
+            <lightning-datatable key-field="id" data={featureItems} columns={columns} oncellchange={onCellChanged}
                 hide-checkbox-column onrowaction={onRowActionClicked} suppress-bottom-bar></lightning-datatable>
 		</div>
         <div slot="footer">

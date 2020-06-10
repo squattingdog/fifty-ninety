@@ -4,6 +4,7 @@ export class ProjectionItem {
     description;
     fiftySize;
     ninetySize;
+    projectionId;
     workItemName;
     workItemSize;
     workItemStatus;
@@ -35,6 +36,7 @@ export class Projection extends ProjectionBase {
 export class ProjectionFeature extends ProjectionBase { 
     featureOrder;
     projectionId;
+    projectionItems;
 }
 
 export class Result {
