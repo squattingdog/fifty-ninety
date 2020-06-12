@@ -4,7 +4,7 @@ import { loadStyle } from 'lightning/platformResourceLoader';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import getProjectionFeaturesAndLines from '@salesforce/apex/FN_ProjectionController.getProjectionFeaturesAndLines';
 import projectionResources from '@salesforce/resourceUrl/fifty_ninety';
-import { EVENT_PROJECTION_FEATURE_CREATED, PROJECTION_LINE_COLUMNS, CSS_PROJECTION_FEATURE, CSS_GENERIC } from 'c/constants';
+import { EVENT_PROJECTION_FEATURE_CREATED, EVENT_PROJECTION_ITEM_SIZE_UPDATED, PROJECTION_LINE_COLUMNS, CSS_PROJECTION_FEATURE, CSS_GENERIC } from 'c/constants';
 import { ProjectionItem, Projection, ProjectionFeature } from 'c/projectionModels';
 import { registerListener, unregisterAllListeners } from 'c/pubsub';
 
@@ -72,6 +72,7 @@ export default class ProjectionSheet extends LightningElement {
 
         // register event handlers
         registerListener(EVENT_PROJECTION_FEATURE_CREATED, this.onFeatureCreated, this);
+        registerListener(EVENT_PROJECTION_ITEM_SIZE_UPDATED, this.onProjectionItemSizeUpdated, this);
     }
 
     disconnectedCallback() {
@@ -113,7 +114,7 @@ export default class ProjectionSheet extends LightningElement {
                 feature.projectionItems = new Array();
                     if(f.ProjectionLines__r) {
                         f.ProjectionLines__r.forEach(line => {
-                            const item = new ProjectionItem(); 
+                            const item = new ProjectionItem();
                             this.populateProjectionItem(line, item);
                             feature.projectionItems.push(item);
                         });
@@ -139,32 +140,49 @@ export default class ProjectionSheet extends LightningElement {
     onFeatureCreated(feature) {
         this.features.push(feature);
     }
+
+    onProjectionItemSizeUpdated(projectionItem) {
+        this.updateProjectFeature(this.features, projectionItem);
+    }
+
+    updateProjectFeature(features, projectionItem) {
+        // find the appropriate feature to which the line item belongs
+        const featureToUpdate = features.find(f => f.id === projectionItem.projectionId);
+
+        // find the specific project item and update that index with the modified object.
+        featureToUpdate.projectionItems.forEach((i, idx) => {
+            if(i.id === projectionItem.id) {
+                featureToUpdate[idx] = projectionItem;
+            }
+        });
+    }
     
     populateProjectionItem(i, item) {
-        item.id = i.Id;
-        item.name = i.Name;
         item.description = i.Details__c;
         item.fiftySize = i.FiftySize__c;
+        item.id = i.Id;
+        item.itemOrder = i.ItemOrder__c;
+        item.name = i.Name;
         item.ninetySize = i.NinetySize__c;
+        item.projectionId = i.Projection__c;
         item.workItemId = i.WorkItem__c;
         item.workItemName = i.WorkItemName__c;
         item.workItemSize = i.WorkItemSize__c;
         item.workItemStatus = i.WorkItemStatus__c;
-        item.itemOrder = i.ItemOrder__c;
     }
 
     populateProjectionSheet(object, projectionSheet) {
+        projectionSheet.buffer = object.Buffer__c;
+        projectionSheet.description = object.Description__c;
+        projectionSheet.epicId = object.Epic__r.Id;
+        projectionSheet.epicName = object.Epic__r.Name;
         projectionSheet.id = object.Id;
         projectionSheet.name = object.Name;
-        projectionSheet.description = object.Description__c;
+        projectionSheet.productTagId = object.ProductTag__c;
         projectionSheet.projectedDuration = object.ProjectedDuration__c;
         projectionSheet.projectedDurationWithBuffer = object.ProjectedDurationWithBuffer__c;
         projectionSheet.rateOfWork = object.RateOfWork__c;
         projectionSheet.teamName = object.Team__r.Name;
         projectionSheet.teamId = object.Team__r.Id;
-        projectionSheet.buffer = object.Buffer__c;
-        projectionSheet.epicId = object.Epic__r.Id;
-        projectionSheet.epicName = object.Epic__r.Name;
-        projectionSheet.productTagId = object.ProductTag__c;
     }
 }

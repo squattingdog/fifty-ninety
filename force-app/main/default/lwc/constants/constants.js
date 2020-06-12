@@ -3,6 +3,7 @@ export const EVENT_PROJECTION_CLICKED = 'projectionClicked';
 export const EVENT_PROJECTION_LIST_CHANGED = 'projectionListChanged';
 export const EVENT_PROJECTION_CREATED = 'projectionCreated';
 export const EVENT_PROJECTION_FEATURE_CREATED = 'projectionFeatureCreated';
+export const EVENT_PROJECTION_ITEM_SIZE_UPDATED = 'projectionItemSizeUpdated';
 
 // datatable events
 export const DT_EVENT_CREATE_WORK_ITEM = 'createWorkItem';

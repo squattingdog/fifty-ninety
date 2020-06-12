@@ -4,6 +4,7 @@ export class ProjectionItem {
     description;
     fiftySize;
     ninetySize;
+    buffer;
     projectionId;
     workItemName;
     workItemSize;

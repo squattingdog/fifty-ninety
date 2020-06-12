@@ -1,9 +1,11 @@
-import { LightningElement, api, track } from 'lwc';
-import { updateRecord } from 'lightning/uiRecordApi';
+import { LightningElement, api, track, wire } from 'lwc';
+import { CurrentPageReference } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { updateRecord } from 'lightning/uiRecordApi';
 import { ProjectionItem } from 'c/projectionModels';
-import { DT_EVENT_CREATE_WORK_ITEM } from 'c/constants';
+import { DT_EVENT_CREATE_WORK_ITEM, EVENT_PROJECTION_ITEM_SIZE_UPDATED } from 'c/constants';
 import FeatureItemMapper from 'c/featureItemMapper';
+import { fireEvent } from 'c/pubsub';
 import apexCreateWorkItem from '@salesforce/apex/FN_ProjectionController.createWorkItem';
 
 export default class ProjectionFeature extends LightningElement {
@@ -14,7 +16,7 @@ export default class ProjectionFeature extends LightningElement {
     @api productTagId;
     @api teamId;
     @track featureItems;
-    featureUpdateMap = new Map();
+    @wire(CurrentPageReference) pageRef; // required by pubsub
 
     connectedCallback() {
         // @track does not track child collections - need to pull out child collections as a separtely tracked object/array.
@@ -24,10 +26,8 @@ export default class ProjectionFeature extends LightningElement {
     onCellChanged(event) {
         const draftValues = event.detail.draftValues[0];
         console.log(`Changing: ${JSON.stringify(draftValues, null, 2)}`);
-        console.log(`row id: ${draftValues.id}`);
-        console.log(`map has Id? ${this.featureUpdateMap.has(draftValues.id)}`);
 
-        try{
+        try {
             const featureLineItem = {
                 'fields': FeatureItemMapper.fromProjectionItem(draftValues)
             };
@@ -36,6 +36,16 @@ export default class ProjectionFeature extends LightningElement {
        
             updateRecord(featureLineItem)
             .then(() => {
+
+                // get the feature line and update it.
+                const updatedItem = this.updateFeatureItem(this.featureItems, draftValues);
+
+                // update feature with item and calculate totals.
+                this.updateFeature(this.feature, updatedItem);
+
+                // bubble event and add to sheet's feature collection
+                fireEvent(this.pageRef, EVENT_PROJECTION_ITEM_SIZE_UPDATED, this.feature);
+
                 this.dispatchEvent(
                     new ShowToastEvent({
                         title: 'Success',
@@ -44,7 +54,7 @@ export default class ProjectionFeature extends LightningElement {
                     })
                 );
             })
-            .catch(ex => {
+            .catch(error => {
                 this.dispatchEvent(
                     new ShowToastEvent({
                         title: 'Error Saving Record',
@@ -52,9 +62,9 @@ export default class ProjectionFeature extends LightningElement {
                         variant: 'error'
                     })
                 );
-                console.log(ex);
+                console.log(error);
             });
-        } catch(ex) {
+        } catch(error) {
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Page Exception',
@@ -62,7 +72,7 @@ export default class ProjectionFeature extends LightningElement {
                     variant: 'error'
                 })
             );
-            console.log(ex);
+            console.log(error);
         }
     }
 
@@ -166,6 +176,22 @@ export default class ProjectionFeature extends LightningElement {
         featureItem.itemOrder = apiObject.fields.ItemOrder__c.value;
     }
 
+    updateFeatureItem(items, values) {
+        const itemToUpdate = items.find(i => i.id === values.id);
+
+        if(!itemToUpdate) {
+            return undefined;
+        }
+
+        Object.keys(values).forEach((v) => {
+            if(v !== 'id') {
+                itemToUpdate[v] = values[v];
+            }
+        });
+        
+        return itemToUpdate;
+    }
+
     createTheWorkItem(data) {
         // save work item and line item
         const params = {
@@ -176,7 +202,7 @@ export default class ProjectionFeature extends LightningElement {
             description: data.row.description,
             epicId: this.feature.epicId,
             teamId: this.teamId
-        }
+        };
 
         // call apex controller and create work item
         apexCreateWorkItem(params)
