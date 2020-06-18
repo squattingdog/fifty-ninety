@@ -28,6 +28,7 @@ export const CSS_PROJECTION_STATUS_IN_PROGRESS = 'projection-status_in-progress'
 export const CSS_PROJECTION_STATUS_COMPLETE = 'projection-status_complete';
 
 // icons
+export const ICON_PAGE = 'img/agile.svg#page-icon';
 export const ICON_FNE = 'img/f-n-e.svg#f_n_e';
 export const ICON_KLO = 'img/klo.svg#klo';
 export const ICON_STEER_CO = 'img/steerco.svg#steerco';

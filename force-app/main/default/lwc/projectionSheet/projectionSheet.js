@@ -2,6 +2,7 @@ import { LightningElement, api, track, wire } from 'lwc';
 import { CurrentPageReference } from 'lightning/navigation';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+// import { refreshApex } from '@salesforce/apex';
 import getProjectionFeaturesAndLines from '@salesforce/apex/FN_ProjectionController.getProjectionFeaturesAndLines';
 import projectionResources from '@salesforce/resourceUrl/fifty_ninety';
 import { EVENT_PROJECTION_FEATURE_CREATED, PROJECTION_LINE_COLUMNS, CSS_PROJECTION_FEATURE, CSS_GENERIC } from 'c/constants';
@@ -22,7 +23,7 @@ export default class ProjectionSheet extends LightningElement {
     @wire(CurrentPageReference) pageRef; // required by pubsub
 
     @wire(getObjectInfo, { objectApiName: 'agf__ADM_Work__c' })
-    loadInfo(result){
+    wireWorkRecordTypeInfo(result){
         try {
             if(result) {
                 if(result.error) {

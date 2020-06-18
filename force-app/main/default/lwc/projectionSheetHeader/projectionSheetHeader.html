@@ -45,6 +45,9 @@
                                     <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
                                 </svg-->Unfollow</span>
                         </button>
+                        <button class="slds-button slds-button_brand" onclick={onCalculateClicked}>
+                            Calculate
+                        </button>
                     </div>
                 </div>
             </div>
@@ -62,11 +65,11 @@
                     </li>
                     <li class="slds-page-header__detail-block">
                         <div class="slds-text-title" title="Projected Duration">Buffer</div>
-                        <div>{projection.buffer}</div>
+                        <div><lightning-formatted-number maximum-fraction-digits="2" value={projection.buffer}></lightning-formatted-number></div>
                     </li>
                     <li class="slds-page-header__detail-block">
                         <div class="slds-text-title" title="Projected Duration">Projected Duration w/Buffer</div>
-                        <div>{projection.projectedDurationWithBuffer}</div>
+                        <div><lightning-formatted-number maximum-fraction-digits="2" value={projection.projectedDurationWithBuffer}></lightning-formatted-number></div>
                     </li>
                 </ul>
             </div>

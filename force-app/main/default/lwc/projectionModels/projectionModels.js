@@ -1,15 +1,15 @@
 export class ProjectionItem {
-    id;
-    name;
     description;
     fiftySize;
+    id;
+    itemOrder;
+    name;
     ninetySize;
     projectionId;
     workItemName;
     workItemSize;
     workItemStatus;
     workItemId;
-    itemOrder;
 }
 
 export class ProjectionBase {

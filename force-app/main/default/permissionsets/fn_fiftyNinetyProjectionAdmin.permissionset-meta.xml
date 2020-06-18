@@ -74,11 +74,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>FN_Projection__c.ProjectionSheet__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>FN_Projection__c.ProjectedDurationWithBuffer__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -89,7 +84,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>FN_Projection__c.ProjectionSheet__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>FN_Projection__c.RateOfWork__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FN_Projection__c.Size__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>

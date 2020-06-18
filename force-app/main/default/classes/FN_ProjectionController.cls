@@ -121,10 +121,9 @@ public class FN_ProjectionController {
             agf__Scrum_Team__c = teamId,
             agf__Epic__c = epicId);
         
-
         INSERT work;
 
-        FN_ProjectionLine__c line = new FN_ProjectionLine__c(
+        FN_ProjectionLine__c line = new FN_ProjectionLine__c (
             Id = projectionLineId,
             WorkItem__c = work.Id
         );
@@ -136,5 +135,124 @@ public class FN_ProjectionController {
             FROM FN_ProjectionLine__c
             WHERE ID = :projectionLineId
         ];
+    }
+
+    @AuraEnabled(cacheable=false)
+    public static void calculateProjection(String projectionSheetId) {
+        system.debug('calculate starting with id: ' + projectionSheetId);
+        // try {
+            // get the feature sheet record
+            List<FN_Projection__c> projectionSheets = [SELECT Id, RateOfWork__c FROM FN_Projection__c WHERE Id = :projectionSheetId];
+            
+            // short circuit if the sheet was not found or if the rateOfWork is zero or less.
+            if(projectionSheets == null || projectionSheets.size() != 1 || projectionSheets[0].RateOfWork__c < 1) {
+                system.debug('did not find the sheet');
+                return;
+            }
+
+            // get feature and featureItems
+            List<FN_Projection__c> features = [
+                SELECT ID, Name,
+                    (SELECT ID, Name, FiftySize__c, NinetySize__c FROM ProjectionLines__r)
+                FROM FN_Projection__c
+                WHERE ProjectionSheet__c = :projectionSheetId
+            ];
+
+            // short circuit the processing if there are not any projection line items;
+            if(features == null || features.size() < 1) {
+                system.debug('did not find any features');
+                return;
+            }
+            
+            FN_Projection__c sheet = projectionSheets[0];
+            Decimal runningFiftySize = 0;
+            Decimal runningSquareOfDiffSize = 0;
+            List<FN_Projection__c> projectionUpdates = new List<FN_Projection__c>();
+            
+            // loop features and update the size and buffer values
+            for(FN_Projection__c feature : features) {
+                system.debug('feature: ' + feature.name);
+                Decimal featureFiftySize = 0;
+                Decimal featureNinetySize = 0;
+                Decimal featureSquareOfDiffSize = 0;
+
+                if(feature.ProjectionLines__r == null || feature.ProjectionLines__r.size() < 1) {
+                    system.debug('skipping - no project lines');
+                    continue;
+                }
+                system.debug(feature.Name + ' - featureSquareOfDiffSize: ' + featureSquareOfDiffSize);
+                for(FN_ProjectionLine__c line : feature.ProjectionLines__r) {
+                    Decimal fiftySize = line.FiftySize__c == null ? 0 : line.FiftySize__c;
+                    Decimal ninetySize = line.NinetySize__c == null ? 0 : line.NinetySize__c;
+                    featureFiftySize += fiftySize;
+                    featureNinetySize += ninetySize;
+                    system.debug('square diff: ' + getSquareOfDiff(fiftySize, ninetySize));
+                    featureSquareOfDiffSize += getSquareOfDiff(fiftySize, ninetySize);
+                }
+                system.debug(feature.Name + ' - featureSquareOfDiffSize: ' + featureSquareOfDiffSize);
+                runningFiftySize += featureFiftySize;
+                runningSquareOfDiffSize += featureSquareOfDiffSize;
+
+                // populate object to update and add to collection
+                FN_Projection__c p = new FN_Projection__c (
+                    id = feature.Id,
+                    Size__c = featureFiftySize,
+                    Buffer__c = getBuffer(featureSquareOfDiffSize, sheet.RateOfWork__c)
+                );
+                projectionUpdates.add(p);
+            }
+
+            // get list of line items tied directly to the sheet
+            List<FN_ProjectionLine__c> featurelessLines = [
+                SELECT ID, Name, FiftySize__c, NinetySize__c 
+                FROM FN_ProjectionLine__c
+                WHERE projection__c = :sheet.id];
+
+            // loop lines not related to a feature
+            for(FN_ProjectionLine__c line : featurelessLines) {
+                // add to running total numbers.
+                runningFiftySize += line.FiftySize__c == null ? 0 : line.FiftySize__c;
+                runningSquareOfDiffSize += getSquareOfDiff(line.fiftySize__c == null ? 0 : line.FiftySize__c, line.NinetySize__c == null ? 0 : line.NinetySize__c);
+            }
+
+            system.debug('running 50 size: ' + runningFiftySize);
+            system.debug('running diffs^2: ' + runningSquareOfDiffSize);
+            //update the sheet totals and add to the projections collection for updating.
+            sheet.Size__c = runningFiftySize;
+            sheet.Buffer__c = getBuffer(runningSquareOfDiffSize, sheet.RateOfWork__c);
+            sheet.ProjectedDuration__c = runningFiftySize / sheet.RateOfWork__c;
+            sheet.ProjectedDurationWithBuffer__c = sheet.Buffer__c + sheet.ProjectedDuration__c;
+            
+            projectionUpdates.add(sheet);
+
+            //update DML
+            system.debug('updating');
+            UPDATE projectionUpdates;
+
+       // } catch(exception ex) {
+       //     throw new ProjectionException(ex.getMessage());
+       // }
+        
+        return;
+    }
+
+    public static Decimal getSquareOfDiff(Decimal fiftySize, Decimal ninetySize) {
+        if(ninetySize < fiftySize) {
+            return 0;
+        }
+
+        return (ninetySize - fiftySize).pow(2);
+    }
+
+    private static Decimal getBuffer(Decimal squareOfDiffSum, Decimal rate) {
+        if(rate < 1) {
+            return 0;
+        }
+
+        return Math.sqrt(squareOfDiffSum) / rate;
+    }
+
+    public class ProjectionException extends Exception {
+
     }
 }

@@ -14,7 +14,6 @@ export default class ProjectionFeature extends LightningElement {
     @api productTagId;
     @api teamId;
     @track featureItems;
-    featureUpdateMap = new Map();
 
     connectedCallback() {
         // @track does not track child collections - need to pull out child collections as a separtely tracked object/array.
@@ -25,7 +24,6 @@ export default class ProjectionFeature extends LightningElement {
         const draftValues = event.detail.draftValues[0];
         console.log(`Changing: ${JSON.stringify(draftValues, null, 2)}`);
         console.log(`row id: ${draftValues.id}`);
-        console.log(`map has Id? ${this.featureUpdateMap.has(draftValues.id)}`);
 
         try{
             const featureLineItem = {
@@ -36,6 +34,8 @@ export default class ProjectionFeature extends LightningElement {
        
             updateRecord(featureLineItem)
             .then(() => {
+                this.updateUIFeature(draftValues);
+
                 this.dispatchEvent(
                     new ShowToastEvent({
                         title: 'Success',
@@ -164,6 +164,35 @@ export default class ProjectionFeature extends LightningElement {
         featureItem.name = apiObject.fields.Name.value;
         featureItem.description = apiObject.fields.Details__c.value;
         featureItem.itemOrder = apiObject.fields.ItemOrder__c.value;
+    }
+
+    updateUIFeature(featureItem) {
+        
+        if(!featureItem.fiftySize && !featureItem.ninetySize) {
+            return;
+        }
+
+        let itemIndex = -1;
+        let fiftySize, ninetySize = 0;
+        this.featureItems.forEach((i, idx) => {if(i.id === featureItem.id) { itemIndex = idx; }});
+        const originalFeatureItem = this.featureItems[itemIndex];
+        
+        console.log(`original feature item: ${JSON.stringify(originalFeatureItem, null, 2)}`);
+        
+        if(featureItem.fiftySize) {
+            fiftySize = featureItem.fiftySize;
+            ninetySize = originalFeatureItem.ninetySize;
+        } else if(featureItem.ninetySize) {
+            fiftySize = originalFeatureItem.fiftySize;
+            ninetySize = featureItem.ninetySize;
+        }
+
+        if(fiftySize > ninetySize) {
+            return;
+        }
+        originalFeatureItem.fiftySize = fiftySize;
+        originalFeatureItem.ninetySize = ninetySize;
+        return;
     }
 
     createTheWorkItem(data) {
