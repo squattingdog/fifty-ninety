@@ -33,21 +33,6 @@ export const ICON_FNE = 'img/f-n-e.svg#f_n_e';
 export const ICON_KLO = 'img/klo.svg#klo';
 export const ICON_STEER_CO = 'img/steerco.svg#steerco';
 
-
-// FIELDS
-export const PROJECTION_LINE_COLUMNS = [
-    { label: 'Name', fieldName: 'name', initialWidth: 350, editable: true, sortable: false },
-    { label: 'Description', fieldName: 'description', initialWidth: 575, editable: true, sortable: false },
-    { label: '50-Size', fieldName: 'fiftySize', type: 'number', editable: true, sortable: false, cellAttributes: {alignment: 'left'} },
-    { label: '90-Size', fieldName: 'ninetySize', type: 'number', editable: true, sortable: false, cellAttributes: {alignment: 'left'} },
-    { label: 'Work Item', fieldName: 'workItemName', type: 'text', sortable: false },
-    { label: 'Work Size', fieldName: 'workItemSize', type: 'number', sortable: false, cellAttributes: {alignment: 'left'} },
-    { label: 'Work Status', fieldName: 'workItemStatus', type: 'text', sortable: false },
-    { type: 'action', typeAttributes: { rowActions: [
-        { label: 'Create Work Item', name: DT_EVENT_CREATE_WORK_ITEM }
-    ]}}
-];
-
 export const PROJECTION_DETAIL_SUMMARY_COLUMNS = [
     { label: 'Work Rate', fieldName: 'rateOfWork', type: 'number'},
     { label: 'Projected Duration', fieldName: 'projectedDuration', type: 'number' },

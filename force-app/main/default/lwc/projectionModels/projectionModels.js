@@ -1,3 +1,5 @@
+import FeatureItemMapper from "c/featureItemMapper";
+
 export class ProjectionItem {
     description;
     fiftySize;

@@ -7,15 +7,32 @@ import FeatureItemMapper from 'c/featureItemMapper';
 import apexCreateWorkItem from '@salesforce/apex/FN_ProjectionController.createWorkItem';
 
 export default class ProjectionFeature extends LightningElement {
-    
-    @api columns;
     @api workRecordTypeId;
     @api feature;
     @api productTagId;
     @api teamId;
     @track featureItems;
 
+    // FIELDS
+    @track columns = [
+        { label: 'Name', fieldName: 'name', initialWidth: 250, editable: true, sortable: false },
+        { label: 'Description', fieldName: 'description', initialWidth: 500, editable: true, sortable: false, warpText: true},
+        { label: '50-Size', fieldName: 'fiftySize', type: 'number', initialWidth: 85, editable: true, sortable: false, cellAttributes: {alignment: 'left'} },
+        { label: '90-Size', fieldName: 'ninetySize', type: 'number', initialWidth: 85, editable: true, sortable: false, cellAttributes: {alignment: 'left'} },
+        { label: 'Work Item', fieldName: 'workItemUrl', type: 'url', sortable: false, typeAttributes: {label: {fieldName: 'workItemName'}, target: '_blank'}},
+        { label: 'Work Size', fieldName: 'workItemSize', type: 'number', sortable: false, cellAttributes: {alignment: 'left'} },
+        { label: 'Work Status', fieldName: 'workItemStatus', type: 'text', sortable: false },
+        { type: 'action', typeAttributes: {rowActions: {fieldName: 'rowActions'}}}
+    ];
+
     connectedCallback() {
+        this.feature.projectionItems.forEach(i => {
+            //i.rowActions = [];
+            if(i.workItemName == undefined || i.workItemName == '' || i.workItemName == null) {
+                i.rowActions = [];
+                i.rowActions.push({ label: 'Create Work Item', name: DT_EVENT_CREATE_WORK_ITEM });
+            }
+        })
         // @track does not track child collections - need to pull out child collections as a separtely tracked object/array.
         this.featureItems = this.feature.projectionItems ? Array.from(this.feature.projectionItems) : [];
     }
@@ -223,6 +240,7 @@ export default class ProjectionFeature extends LightningElement {
             row.workItemName = result.WorkItemName__c;
             row.workItemStatus = result.WorkItemStatus__c;
             row.workItemSize = result.WorkItemSize__c;
+            delete row.rowActions;
 
             this.featureItems = Array.from(this.featureItems);
 

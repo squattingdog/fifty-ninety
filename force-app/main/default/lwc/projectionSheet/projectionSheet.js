@@ -8,6 +8,7 @@ import projectionResources from '@salesforce/resourceUrl/fifty_ninety';
 import { EVENT_PROJECTION_FEATURE_CREATED, PROJECTION_LINE_COLUMNS, CSS_PROJECTION_FEATURE, CSS_GENERIC } from 'c/constants';
 import { ProjectionItem, Projection, ProjectionFeature } from 'c/projectionModels';
 import { registerListener, unregisterAllListeners } from 'c/pubsub';
+import FeatureItemMapper from 'c/featureItemMapper';
 
 export default class ProjectionSheet extends LightningElement {
     @api projectionId;
@@ -151,6 +152,7 @@ export default class ProjectionSheet extends LightningElement {
         item.workItemName = i.WorkItemName__c;
         item.workItemSize = i.WorkItemSize__c;
         item.workItemStatus = i.WorkItemStatus__c;
+        item.workItemUrl = i.WorkItem__c ? `/${i.WorkItem__c}` : '';
         item.itemOrder = i.ItemOrder__c;
     }
 
