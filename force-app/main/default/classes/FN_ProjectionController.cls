@@ -20,7 +20,7 @@ public class FN_ProjectionController {
     public static FN_Projection__c[] getAllProjectionSheets() {
         return [
             SELECT Id, Name, Description__c, RateOfWork__c, Team__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, Buffer__c,
-                Team__r.Name, Status__c, WorkType__c, Epic__r.Name, Epic__r.Id
+                Team__r.Name, Status__c, WorkType__c, Epic__r.Name, Epic__r.Id, ProductTag__c, ProductTag__r.Name
             FROM FN_Projection__c 
             WHERE RecordType.Name = 'Sheet' ORDER BY Name
         ];
@@ -46,7 +46,7 @@ public class FN_ProjectionController {
             searchTerm = '%' + searchTerm + '%';
             return [
                 SELECT Id, Name, Description__c, RateOfWork__c, Team__c, ProjectedDuration__c, ProjectedDurationWithBuffer__c, Buffer__c,
-                    Team__r.Name, Status__c, WorkType__c, Epic__r.Name, Epic__r.Id
+                    Team__r.Name, Status__c, WorkType__c, Epic__r.Name, Epic__r.Id, ProductTag__c, ProductTag__r.Name
                 FROM FN_Projection__c 
                 WHERE RecordType.Name = 'Sheet' AND Name LIKE :searchTerm ORDER BY Name LIMIT 50
             ];

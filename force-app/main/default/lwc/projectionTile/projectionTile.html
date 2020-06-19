@@ -12,7 +12,7 @@
 				</div>
 				<div class="slds-media__body">
 					<p class="slds-m-bottom_xx-small">Rate: {projection.RateOfWork__c}</p>
-					<p class="slds-m-bottom_xx-small">Duration: {projection.ProjectedTimeWithBuffer__c}</p>
+					<p class="slds-m-bottom_xx-small">Duration: <lightning-formatted-number maximum-fraction-digits="2" value={projection.ProjectedDurationWithBuffer__c}></lightning-formatted-number></p>
 					<p class="slds-m-bottom_xx-small">Team: {projection.Team__r.Name}</p>
 				</div>
 			</div>

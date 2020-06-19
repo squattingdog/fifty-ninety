@@ -1,39 +1,38 @@
 <template>
-    <lightning-card title="Projection Details" >
-        <div class="slds-card__body_inner">
+    <lightning-card>
+        <div slot="title">
             <template if:true={hasProjection}>
-                <lightning-card title={projection.Name}>
-                    <div class="slds-p-horizontal_small">
-                        <div class="slds-media">
-                            <div class="slds-media__figure">
-                                <img src={appResources.projectionIcon} alt="Projections profile" class="projection-icon"/>
-                            </div>
-                            <div class="slds-media__body">
-                                <p class="slds-m-bottom_xx-small">{description}</p>
-                                <p class="slds-m-bottom_xx-small">Id: {projection.Id}</p>
-                                <p class="slds-m-bottom_xx-small">Rate: {projection.RateOfWork__c}</p>
-                                <p class="slds-m-bottom_xx-small">Duration: {projection.ProjectedDuration__c}</p>
-                                <p class="slds-m-bottom_xx-small">Buffer: {projection.Buffer__c}</p>
-                                <p class="slds-m-bottom_xx-small">Duration w/Buffer: {projection.ProjectedDurationWithBuffer__c}</p>
-                                <p class="slds-m-bottom_xx-small">Team: {projection.Team__r.Name}</p>
-                                <p class="slds-m-bottom_xx-small">Status: {projection.Status__c}</p>
-                                <p class="slds-m-bottom_xx-small">Type: {projection.WorkType__c}</p>
-                                <!--
-                                    <p class="slds-m-bottom_xx-small">SHOW RELATED EPIC INFO HERE</p>
-                                    this is changing.  An epic will not be the contain for the overall projection. 
-                                -->
-                            </div>
-                        </div>
-                    </div>
-                </lightning-card>
-            </template>
-            <template if:false={hasProjection}>
-                <div>
-                    Select a projection to view its data.
-                </div>
+                <div class="slds-text-heading_large">{projection.Name}</div>
             </template>
         </div>
-        
+        <div class="slds-card__body_inner">
+            <template if:true={hasProjection}>
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <img src={appResources.projectionIcon} alt="Projections profile" class="projection-icon"/>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-p-bottom_small"><lightning-formatted-rich-text value={projection.Description__c}></lightning-formatted-rich-text></div>
+                        <p class="slds-m-bottom_xx-small"><b>Id: </b> {projection.Id}</p>
+                        <p class="slds-m-bottom_xx-small"><b>Rate:</b> {projection.RateOfWork__c}</p>
+                        <p class="slds-m-bottom_xx-small"><b>Duration: </b> <lightning-formatted-number maximum-fraction-digits="2" value={projection.ProjectedDuration__c}></lightning-formatted-number></p>
+                        <p class="slds-m-bottom_xx-small"><b>Buffer: </b> <lightning-formatted-number maximum-fraction-digits="2" value={projection.Buffer__c}></lightning-formatted-number></p>
+                        <p class="slds-m-bottom_xx-small"><b>Duration w/Buffer: </b> <lightning-formatted-number maximum-fraction-digits="2" value={projection.ProjectedDurationWithBuffer__c}></lightning-formatted-number></p>
+                        <p class="slds-m-bottom_xx-small"><b>Type:</b> {projection.WorkType__c}</p>
+                        <p class="slds-m-bottom_xx-small"><b>Status:</b> {projection.Status__c}</p>
+                        <p class="slds-m-bottom_xx-small"><b>Team:</b> {projection.Team__r.Name}</p>
+                        <p class="slds-m-bottom_xx-small"><b>Product Tag:</b> {projection.ProductTag__r.Name}</p>
+                        <!--
+                            <p class="slds-m-bottom_xx-small">SHOW RELATED EPIC INFO HERE</p>
+                            this is changing.  An epic will not be the container for the overall projection. 
+                        -->
+                    </div>
+                </div>
+            </template>
+            <template if:false={hasProjection}>
+                <div>Select a projection to view its data.</div>
+            </template>
+        </div>
     </lightning-card>
     </template>
 </template>

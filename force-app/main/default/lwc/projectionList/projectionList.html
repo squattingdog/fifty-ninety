@@ -1,5 +1,5 @@
 <template>
-    <div aria-hidden={showModal}>
+    <div>
         <lightning-card title="Projections" icon-name="utility:component_customization">
             <div slot="actions">
                 <!-- new sheet button & modal -->
@@ -14,7 +14,7 @@
                     <!-- projections listing -->
                     <lightning-layout multiple-rows="true" pull-to-boundary="small">
                         <template for:each={projections.data} for:item="projection">
-                            <lightning-layout-item key={projection.Id} size="3" class="slds-p-around_x-small">
+                            <lightning-layout-item key={projection.Id} size="4" class="slds-p-around_x-small">
                                 <!-- projection tile -->
                                 <c-projection-tile projection={projection}></c-projection-tile>
                             </lightning-layout-item>

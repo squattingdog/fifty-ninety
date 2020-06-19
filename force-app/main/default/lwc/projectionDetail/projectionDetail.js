@@ -21,10 +21,6 @@ export default class ProjectionDetail extends LightningElement {
         unregisterAllListeners(this);
     }
 
-    get description() {
-        return decodeURIComponent(this.projection.Description__c);
-    }
-
     get hasProjection() {
         const ret = this.projection != null;
         return ret;
