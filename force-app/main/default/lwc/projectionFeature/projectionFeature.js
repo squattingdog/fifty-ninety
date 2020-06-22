@@ -26,6 +26,10 @@ export default class ProjectionFeature extends LightningElement {
     ];
 
     connectedCallback() {
+        // short circuit if projection items is not defined.
+        if (!this.feature.projectionItems) { return; }
+
+        // iterate projection items to build custom values.
         this.feature.projectionItems.forEach(i => {
             //i.rowActions = [];
             if(i.workItemName == undefined || i.workItemName == '' || i.workItemName == null) {
