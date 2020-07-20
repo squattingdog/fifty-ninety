@@ -150,10 +150,14 @@ public class FN_ProjectionController {
                 return;
             }
 
+            system.debug('sheet detail used for calculations:');
+            system.debug('id: ' + projectionSheets[0].id);
+            system.debug('rate: ' + projectionSheets[0].rateOfWork__c);
+
             // get feature and featureItems
             List<FN_Projection__c> features = [
                 SELECT ID, Name,
-                    (SELECT ID, Name, FiftySize__c, NinetySize__c FROM ProjectionLines__r)
+                    (SELECT ID, Name, FiftySize__c, NinetySize__c, WorkItemName__c, WorkItemSize__c, WorkItemStatus__c FROM ProjectionLines__r)
                 FROM FN_Projection__c
                 WHERE ProjectionSheet__c = :projectionSheetId
             ];
@@ -180,16 +184,16 @@ public class FN_ProjectionController {
                     system.debug('skipping - no project lines');
                     continue;
                 }
-                system.debug(feature.Name + ' - featureSquareOfDiffSize: ' + featureSquareOfDiffSize);
+                system.debug(feature.Name + ' - START featureSquareOfDiffSize: ' + featureSquareOfDiffSize);
                 for(FN_ProjectionLine__c line : feature.ProjectionLines__r) {
-                    Decimal fiftySize = line.FiftySize__c == null ? 0 : line.FiftySize__c;
-                    Decimal ninetySize = line.NinetySize__c == null ? 0 : line.NinetySize__c;
+                    Decimal fiftySize = getFiftySizeFromLineItem(line);
+                    Decimal ninetySize = getNinetySizeFromLineItem(line);
                     featureFiftySize += fiftySize;
                     featureNinetySize += ninetySize;
                     system.debug('square diff: ' + getSquareOfDiff(fiftySize, ninetySize));
                     featureSquareOfDiffSize += getSquareOfDiff(fiftySize, ninetySize);
                 }
-                system.debug(feature.Name + ' - featureSquareOfDiffSize: ' + featureSquareOfDiffSize);
+                system.debug(feature.Name + ' - END featureSquareOfDiffSize: ' + featureSquareOfDiffSize);
                 runningFiftySize += featureFiftySize;
                 runningSquareOfDiffSize += featureSquareOfDiffSize;
 
@@ -199,20 +203,24 @@ public class FN_ProjectionController {
                     Size__c = featureFiftySize,
                     Buffer__c = getBuffer(featureSquareOfDiffSize, sheet.RateOfWork__c)
                 );
+                system.debug('Feature id: ' + p.id);
                 projectionUpdates.add(p);
             }
 
             // get list of line items tied directly to the sheet
             List<FN_ProjectionLine__c> featurelessLines = [
-                SELECT ID, Name, FiftySize__c, NinetySize__c 
+                SELECT ID, Name, FiftySize__c, NinetySize__c, WorkItemName__c, WorkItemSize__c, WorkItemStatus__c 
                 FROM FN_ProjectionLine__c
                 WHERE projection__c = :sheet.id];
 
             // loop lines not related to a feature
             for(FN_ProjectionLine__c line : featurelessLines) {
                 // add to running total numbers.
-                runningFiftySize += line.FiftySize__c == null ? 0 : line.FiftySize__c;
-                runningSquareOfDiffSize += getSquareOfDiff(line.fiftySize__c == null ? 0 : line.FiftySize__c, line.NinetySize__c == null ? 0 : line.NinetySize__c);
+                Decimal fiftySize = getFiftySizeFromLineItem(line);
+                Decimal ninetySize = getNinetySizeFromLineItem(line);
+                
+                runningFiftySize += fiftySize;
+                runningSquareOfDiffSize += getSquareOfDiff(fiftySize, ninetySize);
             }
 
             system.debug('running 50 size: ' + runningFiftySize);
@@ -250,6 +258,34 @@ public class FN_ProjectionController {
         }
 
         return Math.sqrt(squareOfDiffSum) / rate;
+    }
+
+    private static Decimal getFiftySizeFromLineItem(FN_ProjectionLine__c line) {
+        system.debug('getting fifty size for: ' + line.name);
+        if(line.WorkItemName__c == null) {
+            system.debug('work item name is null, using fiftySize');
+            return line.FiftySize__c == null ? 0 : line.FiftySize__c;
+        } else if(line.workItemStatus__c != 'Closed') { 
+            system.debug('work item name is not null, using work item size');
+            return line.WorkItemSize__c == null ? 0 : line.WorkItemSize__c;
+        }
+
+        system.debug('no matches using zero');
+        return 0;
+    }
+
+    private static Decimal getNinetySizeFromLineItem(FN_ProjectionLine__c line) {
+        system.debug('getting ninety size for: ' + line.name);
+        if(line.WorkItemName__c == null) {
+            system.debug('work item name is null, using ninetySize');
+            return line.NinetySize__c == null ? 0 : line.NinetySize__c;
+        } else if(line.workItemStatus__c != 'Closed') { 
+            system.debug('work item name is not null, using work item size');
+            return line.WorkItemSize__c == null ? 0 : line.WorkItemSize__c;
+        }
+
+        system.debug('no matches using zero');
+        return 0;
     }
 
     public class ProjectionException extends Exception {
