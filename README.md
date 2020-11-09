@@ -4,17 +4,16 @@ This project provides an Agile team with a manner to determine a projection of t
 ## Dev Setup
 In order to complete the developer setup steps, it is necessary to create a dev-hub org.  The best way to do this is to create a developer org and then enable the dev-hub feature.  Creating a dev-hub org from the dx signup form will create a trial org that will expire.  Developer orgs do not expire and for this reason are a better option for using dev-hub.
 
-Once you have an org that you would like to use, follow the documentation link to complete the Dev Hub setup.
-https://help.salesforce.com/articleView?id=sfdx_setup_enable_devhub.htm&type=5
+Once you have an org that you would like to use, follow the documentation link to complete the [Dev Hub setup.](https://help.salesforce.com/articleView?id=sfdx_setup_enable_devhub.htm&type=5)
 
-Once the Dev Hub feature is enabled, create a new scratch org replacing 'your-alias' with your value of choice.
+After enabling the Dev Hub feature, create a new scratch org replacing 'your-alias' with your value of choice.
 ```console
 sfdx force:org:create -f config/project-scratch-def.json -a [your-alias] -d 30 -s --loglevel debug --json
 ```
 
 ### Deploy
 #### Install dependencies
-Install the dependencies found in the fifty-ninety-dependencies repo.  Use the scratch org created above to install the dependencies.
+Install the dependencies found in the [fifty-ninety-dependencies](https://github.com/squattingdog/fifty-ninety-dependencies) repo.  Use the scratch org created above to install the dependencies.
 
 #### Deploy the source code
 Deploy the code using sfdx once the dependencies have been installed.

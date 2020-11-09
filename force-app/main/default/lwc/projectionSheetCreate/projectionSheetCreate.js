@@ -28,6 +28,8 @@ export default class ProjectionSheetCreate extends LightningElement {
             }
         } catch (error) {
             // handle error
+            console.log('error in LoadInfo');
+            console.log(error);
         }
     }
 
@@ -50,6 +52,7 @@ export default class ProjectionSheetCreate extends LightningElement {
     }
 
     onSaveNewSheetClicked(event) {
+        console.log('saving new projection');
         try {
             event.preventDefault();
             const fields = event.detail.fields;
@@ -57,7 +60,8 @@ export default class ProjectionSheetCreate extends LightningElement {
             form.submit(fields);
         } catch (err) {
             // handle error - show toast or something.
-            console.log(error);
+            console.log('error onSaveNewSheetClicked()');
+            console.log(err);
         }
     }
 
